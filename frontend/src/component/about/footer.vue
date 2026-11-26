@@ -18,7 +18,7 @@ export default {
   name: "PAboutFooter",
   data() {
     const version = this.$config.values.version || "";
-    const shortVersion = version.split("-")[0];
+    const shortVersion = version.split("-")[0].slice(0, 7);
     return {
       appName: this.$config.getName(),
       buildVersion: shortVersion ? `v${shortVersion}` : version,

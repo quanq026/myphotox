@@ -190,7 +190,7 @@ export default {
         .load()
         .then(() => {
           this.settings.setValues(this.$config.getSettings());
-          this.themes = themes.ThemeOptions(this.$gettext);
+          this.themes = themes.Translated().filter(Boolean);
           this.currentTheme = this.settings.ui.theme;
         })
         .finally(() => {
