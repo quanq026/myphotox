@@ -1,0 +1,97 @@
+##################################################### BUILD STAGE ######################################################
+FROM photoprism/develop:noble AS build
+
+# Upgrade Node.js (>=24.15/26 for Vite 8 + zstd precompress) and Go (1.27+ per go.mod)
+# before copying source so Docker caches this toolchain layer across rebuilds.
+RUN (n 26 || n 24) && \
+    GO_VER=$(curl -fsSL "https://go.dev/VERSION?m=text" | head -n 1) && \
+    rm -rf /usr/local/go && \
+    curl -fsSL "https://go.dev/dl/${GO_VER}.linux-amd64.tar.gz" | tar --no-same-owner -xz -C /usr/local && \
+    node -v && go version
+
+WORKDIR /go/src/github.com/photoprism/photoprism
+COPY . .
+
+# Ensure Linux LF line endings for build scripts copied from Windows
+RUN sed -i 's/\r$//' scripts/build.sh scripts/dist/arch.sh
+
+# Install workspace npm dependencies, build Vue 3 + Vuetify 4 Lite frontend, and precompress
+RUN npm install --ignore-scripts --no-audit --no-fund --no-update-notifier && \
+    npm --workspace=frontend run build && \
+    node frontend/scripts/precompress.js
+
+# Build PhotoPrism Go binary
+RUN mkdir -p /opt/photoprism/bin /opt/photoprism/lib /opt/photoprism/assets && \
+    ./scripts/build.sh prod /opt/photoprism/bin/photoprism
+
+# Copy static assets (built frontend + en/vi locales), excluding ML models
+RUN cp -a assets/templates assets/static /opt/photoprism/assets/ && \
+    mkdir -p /opt/photoprism/assets/locales && \
+    cp -a assets/locales/en assets/locales/vi /opt/photoprism/assets/locales/ && \
+    if [ -f assets/locales/messages.pot ]; then cp -a assets/locales/messages.pot /opt/photoprism/assets/locales/; fi
+
+# Copy any non-standard shared libraries linked by CGo
+RUN ldd /opt/photoprism/bin/photoprism && \
+    ldd /opt/photoprism/bin/photoprism | awk '/=> \// {print $3}' | grep -E 'libtensorflow|libonnx|libvips|libheif|libde265|libx265|libaom|libjxl|libsharpyuv' | while read -r lib; do \
+      cp -Lv "$lib" /opt/photoprism/lib/ || true; \
+    done && \
+    ls -lh /opt/photoprism/lib
+
+################################################## PRODUCTION STAGE ####################################################
+FROM ubuntu:noble
+
+LABEL org.opencontainers.image.title="PhotoPrism Lite"
+LABEL org.opencontainers.image.description="Lightweight SQLite single-container PhotoPrism Lite"
+
+ENV DEBIAN_FRONTEND="noninteractive" \
+    DO_NOT_TRACK=true \
+    ORT_DISABLE_TELEMETRY=1 \
+    TF_CPP_MIN_LOG_LEVEL=4 \
+    MALLOC_ARENA_MAX=2 \
+    HOME="/photoprism" \
+    PATH="/opt/photoprism/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+    LD_LIBRARY_PATH="/opt/photoprism/lib:/usr/local/lib:/usr/lib" \
+    PHOTOPRISM_ASSETS_PATH="/opt/photoprism/assets" \
+    PHOTOPRISM_ORIGINALS_PATH="/photoprism/originals" \
+    PHOTOPRISM_IMPORT_PATH="/photoprism/import" \
+    PHOTOPRISM_STORAGE_PATH="/photoprism/storage" \
+    PHOTOPRISM_BACKUP_PATH="/photoprism/storage/backups" \
+    PHOTOPRISM_LOG_FILENAME="/photoprism/storage/photoprism.log" \
+    PHOTOPRISM_PID_FILENAME="/photoprism/storage/photoprism.pid" \
+    PHOTOPRISM_DATABASE_DRIVER="sqlite" \
+    PHOTOPRISM_SITE_TITLE="PhotoPrism Lite" \
+    PHOTOPRISM_SITE_CAPTION="Lite Photos App" \
+    PHOTOPRISM_DEFAULT_LOCALE="en" \
+    PHOTOPRISM_HTTP_HOST="0.0.0.0" \
+    PHOTOPRISM_HTTP_PORT="2342" \
+    PHOTOPRISM_DISABLE_TLS="true" \
+    PHOTOPRISM_DISABLE_TENSORFLOW="true" \
+    PHOTOPRISM_DISABLE_FACES="true" \
+    PHOTOPRISM_DISABLE_PLACES="true" \
+    PHOTOPRISM_DISABLE_WEBDAV="true" \
+    PHOTOPRISM_DISABLE_RAW="true" \
+    PHOTOPRISM_DISABLE_DARKTABLE="true" \
+    PHOTOPRISM_DISABLE_RAWTHERAPEE="true" \
+    PHOTOPRISM_DISABLE_IMAGEMAGICK="true" \
+    PHOTOPRISM_DISABLE_VECTORS="true" \
+    PHOTOPRISM_DISABLE_MCP="true" \
+    PHOTOPRISM_DISABLE_OIDC="true" \
+    PHOTOPRISM_DISABLE_BACKUPS="true" \
+    PHOTOPRISM_DETECT_NSFW="false" \
+    PHOTOPRISM_AUTO_INDEX="300" \
+    PHOTOPRISM_AUTO_IMPORT="-1"
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      ca-certificates tzdata bash curl sqlite3 ffmpeg exiftool libvips42t64 libheif1 && \
+    rm -rf /var/lib/apt/lists/* && \
+    mkdir -p /photoprism/originals /photoprism/import /photoprism/storage
+
+COPY --from=build /opt/photoprism /opt/photoprism
+
+RUN mkdir -p /opt/photoprism/assets/models && /opt/photoprism/bin/photoprism version
+
+WORKDIR /photoprism
+EXPOSE 2342
+
+CMD ["/opt/photoprism/bin/photoprism", "start"]

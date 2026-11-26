@@ -1,0 +1,26 @@
+services:
+  photoprism-lite:
+    build:
+      context: .
+      dockerfile: Dockerfile.lite
+    image: photoprism-lite:latest
+    restart: unless-stopped
+    ports:
+      - "${PHOTOPRISM_PORT:-2342}:2342"
+    environment:
+      PHOTOPRISM_ADMIN_USER: "${PHOTOPRISM_ADMIN_USER:-admin}"
+      PHOTOPRISM_ADMIN_PASSWORD: "${PHOTOPRISM_ADMIN_PASSWORD:-photoprism}"
+      PHOTOPRISM_SITE_URL: "${PHOTOPRISM_SITE_URL:-http://localhost:2342/}"
+      PHOTOPRISM_DEFAULT_LOCALE: "${PHOTOPRISM_DEFAULT_LOCALE:-en}"
+      PHOTOPRISM_AUTH_MODE: "password"
+      PHOTOPRISM_DEBUG: "false"
+    volumes:
+      - "./originals:/photoprism/originals"
+      - "./import:/photoprism/import"
+      - "./storage:/photoprism/storage"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:2342/api/v1/status"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
