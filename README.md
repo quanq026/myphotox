@@ -1,6 +1,6 @@
 # MyPhotoX
 
-Lightweight, self-hosted personal photos and videos web app running in a single Alpine SQLite container (~300 MB image, ~30 MB idle RAM).
+Lightweight, self-hosted personal photos and videos web app running in a single Alpine SQLite container (~490 MB image, ~30-37 MB idle RAM).
 
 ## Features
 
@@ -18,7 +18,15 @@ docker compose pull
 docker compose up -d
 ```
 
-Open `http://localhost:2342`. Image builds run on GitHub Actions and publish to `ghcr.io/quanq026/myphotox:latest`.
+Open `http://localhost:2342`.
+
+## CI/CD
+
+GitHub Actions (`.github/workflows/ci-cd.yml`) runs on pushes/PRs to `main` and version tags (`v*`):
+
+- `ci-frontend`: Node 24 XSS scan, frontend Vite build & precompress check
+- `ci-backend`: Go 1.27 CGo vet, binary build & TensorFlow-free check
+- `cd-docker`: Multi-stage Alpine 3.23 Docker image push to `ghcr.io/quanq026/myphotox:latest` (runs after CI passes, skipped on PRs)
 
 ## Directories
 
