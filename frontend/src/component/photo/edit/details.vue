@@ -134,212 +134,8 @@
                 @update:model-value="setTimeZone"
               ></v-autocomplete>
             </v-col>
-            <v-col cols="12" sm="6" md="6">
-              <p-meta-location-input
-                :latlng="[view.model.Lat, view.model.Lng]"
-                :disabled="disabled"
-                hide-details
-                :label="locationLabel"
-                density="comfortable"
-                validate-on="input"
-                :show-map-button="!placesDisabled"
-                :map-button-title="$gettext('Adjust Location')"
-                :map-button-disabled="placesDisabled"
-                class="input-coordinates"
-                @update:latlng="updateLatLng"
-                @changed="onLocationChanged"
-                @open-map="adjustLocation"
-              ></p-meta-location-input>
-            </v-col>
-            <v-col cols="12" sm="6" md="4">
-              <v-autocomplete
-                v-model="view.model.Country"
-                :append-inner-icon="view.model.PlaceSrc === 'manual' ? 'mdi-check' : ''"
-                :disabled="disabled"
-                :readonly="!!(view.model.Lat || view.model.Lng)"
-                :label="$gettext('Country')"
-                hide-no-data
-                autocomplete="off"
-                item-value="Code"
-                item-title="Name"
-                :items="countries"
-                density="comfortable"
-                validate-on="input"
-                :rules="rules.country(true)"
-                class="input-country"
-              >
-              </v-autocomplete>
-            </v-col>
-            <v-col cols="2" class="hidden-sm-and-down">
-              <v-text-field
-                v-model="view.model.Altitude"
-                :disabled="disabled"
-                flat
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="none"
-                :label="$gettext('Altitude (m)')"
-                placeholder=""
-                color="surface-variant"
-                density="comfortable"
-                validate-on="input"
-                :rules="rules.number(false, -10000, 1000000)"
-                class="input-altitude"
-                style="flex: 0 0 120px"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6" class="p-camera-select">
-              <v-select
-                v-model="view.model.CameraID"
-                :append-inner-icon="view.model.CameraSrc === 'manual' ? 'mdi-check' : ''"
-                :disabled="disabled"
-                :placeholder="$gettext('Camera')"
-                :menu-props="{ maxHeight: 346 }"
-                autocomplete="off"
-                hide-details
-                item-value="ID"
-                item-title="Name"
-                :items="cameraOptions"
-                prepend-inner-icon="mdi-camera"
-                density="comfortable"
-                class="input-camera"
-              >
-              </v-select>
-            </v-col>
-            <v-col cols="6" md="3">
-              <v-text-field
-                v-model="view.model.Iso"
-                :disabled="disabled"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="none"
-                label="ISO"
-                placeholder=""
-                density="comfortable"
-                validate-on="input"
-                :rules="rules.number(false, 0, 128000)"
-                class="input-iso"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6" md="3">
-              <v-text-field
-                v-model="view.model.Exposure"
-                :disabled="disabled"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="none"
-                :label="$gettext('Exposure')"
-                placeholder=""
-                density="comfortable"
-                validate-on="input"
-                :rules="rules.text(false, 0, PhotoMaxLength.Exposure, $gettext('Exposure'))"
-                class="input-exposure"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6" class="p-lens-select">
-              <v-select
-                v-model="view.model.LensID"
-                :append-inner-icon="view.model.CameraSrc === 'manual' ? 'mdi-check' : ''"
-                :disabled="disabled"
-                :placeholder="$gettext('Lens')"
-                :menu-props="{ maxHeight: 346 }"
-                autocomplete="off"
-                hide-details
-                item-value="ID"
-                item-title="Name"
-                :items="lensOptions"
-                prepend-inner-icon="mdi-camera-iris"
-                density="comfortable"
-                class="input-lens"
-              >
-              </v-select>
-            </v-col>
-            <v-col cols="6" md="3">
-              <v-text-field
-                v-model="view.model.FNumber"
-                :disabled="disabled"
-                autocomplete="off"
-                autocorrect="off"
-                autocapitalize="none"
-                :label="$gettext('F Number')"
-                placeholder=""
-                density="comfortable"
-                validate-on="input"
-                :rules="rules.number(false, 0, 256)"
-                class="input-fnumber"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6" md="3">
-              <v-text-field
-                v-model="view.model.FocalLength"
-                :disabled="disabled"
-                autocomplete="off"
-                :label="$gettext('Focal Length')"
-                placeholder=""
-                density="comfortable"
-                validate-on="input"
-                :rules="rules.number(false, 0, 128000)"
-                class="input-focal-length"
-              ></v-text-field>
-            </v-col>
           </v-row>
           <v-row density="compact">
-            <v-col cols="12" md="6">
-              <v-textarea
-                v-model="view.model.Details.Subject"
-                :append-inner-icon="view.model.Details.SubjectSrc === 'manual' ? 'mdi-check' : ''"
-                :disabled="disabled"
-                :rules="rules.text(false, 0, PhotoMaxLength.Subject, $gettext('Subject'))"
-                autocomplete="off"
-                auto-grow
-                :label="$gettext('Subject')"
-                placeholder=""
-                :rows="1"
-                density="comfortable"
-                class="input-subject"
-              ></v-textarea>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-text-field
-                v-model="view.model.Details.Copyright"
-                :append-inner-icon="view.model.Details.CopyrightSrc === 'manual' ? 'mdi-check' : ''"
-                :disabled="disabled"
-                :rules="rules.text(false, 0, PhotoMaxLength.Copyright, $gettext('Copyright'))"
-                autocomplete="off"
-                :label="$gettext('Copyright')"
-                placeholder=""
-                density="comfortable"
-                class="input-copyright"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-text-field
-                v-model="view.model.Details.Artist"
-                :append-inner-icon="view.model.Details.ArtistSrc === 'manual' ? 'mdi-check' : ''"
-                :disabled="disabled"
-                :rules="rules.text(false, 0, PhotoMaxLength.Artist, $gettext('Artist'))"
-                autocomplete="off"
-                :label="$gettext('Artist')"
-                placeholder=""
-                density="comfortable"
-                class="input-artist"
-              ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-textarea
-                v-model="view.model.Details.License"
-                :append-inner-icon="view.model.Details.LicenseSrc === 'manual' ? 'mdi-check' : ''"
-                :disabled="disabled"
-                :rules="rules.text(false, 0, PhotoMaxLength.License, $gettext('License'))"
-                autocomplete="off"
-                auto-grow
-                :label="$gettext('License')"
-                placeholder=""
-                :rows="1"
-                density="comfortable"
-                class="input-license"
-              ></v-textarea>
-            </v-col>
             <v-col cols="12" md="8">
               <v-textarea
                 v-model="view.model.Details.Keywords"
@@ -388,23 +184,16 @@
           <v-btn
             color="highlight"
             variant="flat"
-            :disabled="!view.model?.wasChanged() && !inReview"
-            :aria-label="inReview ? $gettext(`Approve and save changes`) : $gettext('Save changes')"
-            class="action-save action-apply action-approve"
+            :disabled="!view.model?.wasChanged()"
+            :aria-label="$gettext('Save changes')"
+            class="action-save action-apply"
             @click.stop="save(false)"
           >
-            <span v-if="inReview">{{ $gettext(`Approve`) }}</span>
-            <span v-else>{{ $gettext(`Save`) }}</span>
+            <span>{{ $gettext(`Save`) }}</span>
           </v-btn>
         </div>
       </div>
     </v-form>
-    <p-meta-location-dialog
-      :visible="locationDialog"
-      :latlng="[view.model.Lat ? Number(view.model.Lat) : 0, view.model.Lng ? Number(view.model.Lng) : 0]"
-      @close="locationDialog = false"
-      @confirm="confirmLocation"
-    ></p-meta-location-dialog>
   </div>
 </template>
 
@@ -413,15 +202,10 @@ import Thumb from "model/thumb";
 import { MaxLength as PhotoMaxLength } from "model/photo";
 import * as options from "options/options";
 import { rules } from "common/form";
-import PMetaLocationDialog from "component/meta/location/dialog.vue";
-import PMetaLocationInput from "component/meta/location/input.vue";
 
 export default {
   name: "PTabPhotoDetails",
-  components: {
-    PMetaLocationDialog,
-    PMetaLocationInput,
-  },
+  components: {},
   props: {
     uid: {
       type: String,

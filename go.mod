@@ -152,7 +152,6 @@ require (
 	github.com/ugjka/go-tz/v2 v2.2.10
 	github.com/ulule/deepcopier v0.0.0-20200430083143-45decc6639b6
 	github.com/urfave/cli/v2 v2.27.7
-	github.com/wamuir/graft v0.10.0
 	github.com/yalue/onnxruntime_go v1.38.0
 	github.com/zitadel/oidc/v3 v3.53.0
 	golang.org/x/crypto v0.59.0

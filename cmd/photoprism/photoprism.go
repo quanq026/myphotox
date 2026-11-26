@@ -1,24 +1,6 @@
 /*
-Copyright (c) 2018 - 2026 PhotoPrism UG. All rights reserved.
-
-	This program is free software: you can redistribute it and/or modify
-	it under Version 3 of the GNU Affero General Public License (the "AGPL"):
-	<https://docs.photoprism.app/license/agpl>
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU Affero General Public License for more details.
-
-	The AGPL is supplemented by our Trademark and Brand Guidelines,
-	which describe how our Brand Assets may be used:
-	<https://www.photoprism.app/trademark/>
-
-Feel free to send an email to hello@photoprism.app if you have questions,
-want to support our work, or just want to say hello.
-
-Additional information can be found in our Developer Guide:
-<https://docs.photoprism.app/developer-guide/>
+MyPhotoX - Lightweight Self-Hosted Photos App
+Licensed under Version 3 of the GNU Affero General Public License (AGPL-3.0).
 */
 package main
 
@@ -39,13 +21,11 @@ import (
 
 var version = "development"
 
-const appName = "PhotoPrism"
-const appAbout = "PhotoPrism®"
-const appEdition = "ce"
-const appDescription = "PhotoPrism® is an AI-Powered Photos App for the Decentralized Web." +
-	" It makes use of the latest technologies to tag and find pictures automatically without getting in your way." +
-	" You can run it at home, on a private server, or in the cloud."
-const appCopyright = "(c) 2018-2026 PhotoPrism UG. All rights reserved."
+const appName = "MyPhotoX"
+const appAbout = "MyPhotoX"
+const appEdition = "lite"
+const appDescription = "MyPhotoX is a lightweight, self-hosted photos and videos app."
+const appCopyright = "MyPhotoX"
 
 // Metadata contains build specific information.
 var Metadata = map[string]any{

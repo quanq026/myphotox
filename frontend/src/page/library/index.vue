@@ -4,7 +4,7 @@
       <div class="form-header">
         <span v-if="fileName" class="text-break">{{ action }} <bdi dir="ltr">{{ $util.stripBidiControls(fileName) }}</bdi>…</span>
         <span v-else-if="action">{{ action }}…</span>
-        <span v-else-if="busy">{{ $gettext(`Indexing media and sidecar files…`) }}</span>
+        <span v-else-if="busy">{{ $gettext(`Indexing media files…`) }}</span>
         <span v-else-if="completed">{{ $gettext(`Done.`) }}</span>
         <span v-else>{{ $gettext(`Select the folder to be indexed…`) }}</span>
       </div>
@@ -48,7 +48,7 @@
             v-model="cleanup"
             :disabled="busy || !ready"
             :label="$gettext('Cleanup')"
-            :hint="$gettext('Delete orphaned index entries, sidecar files and thumbnails.')"
+            :hint="$gettext('Delete orphaned index entries and thumbnails.')"
             prepend-icon="mdi-delete-sweep"
             persistent-hint
           >
@@ -65,14 +65,6 @@
             <v-icon end>mdi-update</v-icon>
           </v-btn>
         </div>
-      </div>
-      <div v-if="ready && !busy && config.count.hidden > 1" class="form-footer">
-        <v-alert color="primary" icon="mdi-alert-circle-outline" class="v-alert--default" variant="outlined">
-          <div>
-            {{ $gettext(`The index currently contains %{n} hidden files.`, { n: config.count.hidden }) }}
-            {{ $gettext(`Their format may not be supported, they haven't been converted to JPEG yet or there are duplicates.`) }}
-          </div>
-        </v-alert>
       </div>
     </v-form>
   </div>

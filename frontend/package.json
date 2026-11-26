@@ -1,7 +1,7 @@
 {
-  "name": "photoprism",
-  "description": "AI-Powered Photos App",
-  "author": "PhotoPrism UG",
+  "name": "myphotox-frontend",
+  "description": "MyPhotoX - Lightweight Self-Hosted Photos App",
+  "author": "MyPhotoX",
   "license": "AGPL-3.0",
   "version": "1",
   "private": true,

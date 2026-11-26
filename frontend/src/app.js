@@ -267,7 +267,7 @@ if (window.__PHOTOPRISM_SUPPORTS__ !== false) {
         if ($config.values.siteCaption === "") {
           window.document.title = $config.values.siteTitle;
         } else {
-          window.document.title = $config.values.siteCaption;
+          window.document.title = $config.values.siteTitle + " – " + $config.values.siteCaption;
         }
       }
     });

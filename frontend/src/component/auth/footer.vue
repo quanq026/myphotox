@@ -1,46 +1,20 @@
 <template>
   <div class="auth-footer">
-    <footer>
-      <v-row class="pa-0 ma-0 align-start">
-        <v-col xs="12" class="pa-0 text-subtitle-2 text-selectable text-start hidden-xs">
-          {{ about }}
-        </v-col>
-        <v-col v-if="loginInfo" xs="12" class="pa-0 text-subtitle-2 text-center text-sm-end">
-          <a v-if="legalUrl" :href="legalUrl" target="_blank" rel="noopener" class="text-link">{{ loginInfo }}</a>
-          <span v-else>{{ loginInfo }}</span>
-        </v-col>
-        <v-col v-else-if="legalInfo" xs="12" class="pa-0 text-subtitle-2 text-center text-sm-end">
-          <a v-if="legalUrl" :href="legalUrl" target="_blank" rel="noopener" class="text-link">{{ legalInfo }}</a>
-          <span v-else>{{ legalInfo }}</span>
-        </v-col>
-        <v-col v-else-if="caption" xs="12" class="pa-0 text-subtitle-2 text-selectable text-center text-sm-end">
-          <strong>{{ caption }}</strong>
-        </v-col>
-        <v-col v-else xs="12" class="pa-0 text-subtitle-2 text-selectable text-center text-sm-end">
-          <router-link to="/about" class="text-link text-ltr">
-            <span class="text-white">Made with ❤️ in Berlin</span>
-          </router-link>
-        </v-col>
-      </v-row>
-    </footer>
+    <div class="text-center footer-links text-caption">
+      <router-link :to="{ name: 'about' }" class="text-white">{{ $gettext("About") }}</router-link>
+    </div>
+    <div class="text-center footer-links text-caption opacity-80">
+      <span class="text-white">{{ appName }}</span>
+    </div>
   </div>
 </template>
 <script>
 export default {
   name: "PAuthFooter",
   data() {
-    const config = this.$config;
     return {
-      about: config.getAbout(),
-      sponsor: config.isSponsor(),
-      caption: config.values.siteCaption ? config.values.siteCaption : config.values.siteTitle,
-      legalUrl: config.values.legalUrl,
-      legalInfo: config.values.legalInfo,
-      loginInfo: config.values.loginInfo,
-      config: config.values,
-      rtl: this.$isRtl,
+      appName: this.$config.getName(),
     };
   },
-  methods: {},
 };
 </script>

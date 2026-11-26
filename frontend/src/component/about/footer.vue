@@ -1,68 +1,29 @@
 <template>
-  <footer class="p-about-footer text-ltr">
-    <div class="flex-fill text-sm-start">
-      <strong>
-        <router-link to="/about" class="text-link text-selectable">{{ about }} {{ getMembership() }}</router-link>
-      </strong>
-      <span :title="version" class="body-link text-selectable">
-        <span class="cursor-copy" @click.stop.prevent="$util.copyText(about, version)">Build</span>
-        <a href="https://docs.photoprism.app/release-notes/" target="_blank" rel="noopener" class="body-link text-truncate">{{ build }}</a>
-      </span>
+  <div id="p-about-footer">
+    <div v-if="legalInfo" class="row legal text-center text-caption py-2 text-secondary-dark">
+      {{ legalInfo }}
     </div>
-    <div class="hidden-xs text-sm-end">
-      <a href="https://raw.githubusercontent.com/photoprism/photoprism/develop/NOTICE" target="_blank" rel="noopener" class="text-link"
-        >{{ $gettext("3rd-party software packages") }}</a
-      >
-      <a href="https://www.photoprism.app/about/team/" target="_blank" rel="noopener" class="body-link">© 2018-2026 PhotoPrism UG</a>
-    </div>
-  </footer>
+    <v-footer class="bg-background pa-2 text-caption text-secondary-dark">
+      <div class="footer-about text-truncate">
+        <router-link :to="{ name: 'about' }" class="body-link text-truncate">{{ appName }} · {{ buildVersion }}</router-link>
+      </div>
+      <div class="footer-copyright text-truncate">
+        <span>{{ appName }}</span>
+      </div>
+    </v-footer>
+  </div>
 </template>
-
 <script>
 export default {
   name: "PAboutFooter",
   data() {
-    const about = this.$config.getAbout();
-    const membership = this.$config.getMembership();
-    const customer = this.$config.getCustomer();
-
+    const version = this.$config.values.version || "";
+    const shortVersion = version.split("-")[0];
     return {
-      rtl: this.$isRtl,
-      about: about,
-      membership: membership,
-      customer: customer,
-      version: this.$config.getVersion(),
-      isDemo: this.$config.isDemo(),
+      appName: this.$config.getName(),
+      buildVersion: shortVersion ? `v${shortVersion}` : version,
+      legalInfo: this.$config.get("legalInfo"),
     };
-  },
-  computed: {
-    build() {
-      if (this.$vuetify.display.xs) {
-        return this.$config.getVersion().split("-").slice(0, 1).join("-");
-      } else {
-        return this.$config.getVersion().split("-").slice(0, 2).join("-");
-      }
-    },
-  },
-  methods: {
-    getMembership() {
-      if (this.isDemo) {
-        return "Demo";
-      }
-
-      const tier = this.$config.getTier();
-      const edition = this.$config.getEdition();
-
-      if (edition === "plus" && tier > 7) {
-        return "Plus";
-      } else if (edition === "plus" && tier > 5) {
-        return "Essentials+";
-      } else if (tier > 3) {
-        return "Essentials";
-      }
-
-      return "CE";
-    },
   },
 };
 </script>

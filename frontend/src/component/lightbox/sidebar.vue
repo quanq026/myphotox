@@ -114,172 +114,6 @@
           </template>
         </v-list-item>
 
-        <v-list-item
-          v-if="canViewLibrary && (cameraInfo || isEditable)"
-          v-tooltip="$gettext('Camera')"
-          :title="cameraInfo || $gettext('Unknown')"
-          prepend-icon="mdi-camera"
-          :class="['metadata__item', { clickable: isEditable }]"
-          @click.stop="openCameraDialog"
-        >
-          <template v-if="isEditable" #append>
-            <v-btn
-              icon="mdi-pencil-outline"
-              density="compact"
-              variant="plain"
-              size="x-small"
-              class="meta-inline-pencil"
-              :title="$gettext('Edit')"
-              @click.stop="openCameraDialog"
-            ></v-btn>
-          </template>
-        </v-list-item>
-
-        <v-list-item
-          v-if="canViewLibrary && lensInfo"
-          v-tooltip="$gettext('Lens')"
-          :title="lensInfo"
-          prepend-icon="mdi-camera-iris"
-          :class="['metadata__item', { clickable: isEditable }]"
-          @click.stop="openCameraDialog"
-        ></v-list-item>
-
-        <template v-if="locationRowVisible">
-          <!-- v-divider class="my-3"></v-divider -->
-          <v-list-item
-            v-tooltip="$gettext('Location')"
-            :title="locationTitle"
-            :subtitle="locationSubtitle"
-            :lines="locationSubtitle ? 'two' : 'one'"
-            prepend-icon="mdi-map-marker"
-            :class="['metadata__item', 'meta-location', { 'meta-coordinates': model.Lat && model.Lng, 'clickable': locationRowClickable }]"
-            @click.stop.prevent="onLocationRowClick"
-          >
-            <template v-if="isEditable && featPlaces" #append>
-              <v-btn
-                icon="mdi-pencil-outline"
-                density="compact"
-                variant="plain"
-                size="x-small"
-                class="meta-inline-pencil meta-inline-pencil--location"
-                :title="$gettext('Edit')"
-                @click.stop.prevent="openLocationDialog"
-              ></v-btn>
-            </template>
-          </v-list-item>
-          <v-list-item v-if="featPlaces && model.Lat && model.Lng" class="mx-0 px-0">
-            <p-map :latlng="[model.Lat, model.Lng]" :animate-duration="0" :marker-clickable="isEditable" @marker-clicked="openLocationDialog"></p-map>
-          </v-list-item>
-        </template>
-
-        <template v-if="canViewPeople && featPeople && !isDocument && (people.length > 0 || isEditable)">
-          <v-divider class="my-3"></v-divider>
-          <v-list-item class="metadata__item">
-            <div class="text-subtitle-2">{{ $gettext("People") }}</div>
-            <template v-if="isEditable || people.length > 0" #append>
-              <!--
-                Editable users get the pencil toggle (edit mode is a
-                superset of display, so no separate display toggle);
-                read-only users get the eye toggle. Both modes hide
-                lightbox chrome and gate keyboard shortcuts — see
-                lightbox.vue isShortcutDisabledInFaceMarkerMode.
-              -->
-              <v-btn
-                v-if="isEditable"
-                :icon="markersEdit ? 'mdi-pencil-off-outline' : 'mdi-pencil-outline'"
-                density="compact"
-                variant="plain"
-                size="x-small"
-                class="meta-markers-toggle meta-faces-edit"
-                :class="{ 'is-active': markersEdit }"
-                :title="markersEdit ? $gettext('Done') : $gettext('Edit')"
-                :disabled="markersBusy"
-                @mousedown.prevent
-                @click.stop="onToggleFaceMarkerEdit"
-              ></v-btn>
-              <v-btn
-                v-else
-                :icon="markersVisible ? 'mdi-eye-off-outline' : 'mdi-eye-outline'"
-                density="compact"
-                variant="plain"
-                size="x-small"
-                class="meta-markers-toggle meta-faces-display"
-                :class="{ 'is-active': markersVisible }"
-                :title="markersVisible ? $gettext('Hide face markers') : $gettext('Show face markers')"
-                :disabled="markersBusy"
-                @mousedown.prevent
-                @click.stop="onToggleFaceMarkerMode"
-              ></v-btn>
-            </template>
-          </v-list-item>
-          <v-list-item
-            v-for="m in people"
-            :key="m.UID || m.CropID"
-            :data-marker-uid="m.UID"
-            class="metadata__item metadata__person-row"
-            @mouseenter="faceMarkers.active && faceMarkers.setHoveredMarkerUid(m.UID)"
-            @mouseleave="faceMarkers.active && faceMarkers.setHoveredMarkerUid('')"
-          >
-            <template #prepend>
-              <img
-                :src="m.thumbnailUrl('tile_160')"
-                :alt="m.Name"
-                class="meta-person__avatar"
-                :class="{ clickable: m.Name && m.SubjUID }"
-                @click.stop="m.Name && m.SubjUID ? navigateToPerson(m) : null"
-              />
-            </template>
-            <v-combobox
-              v-if="isEditable"
-              :model-value="markerInputValue(m.UID)"
-              :search="markerInputSearch(m.UID)"
-              :items="knownPeople"
-              item-title="Name"
-              item-value="Name"
-              :placeholder="$gettext('Name')"
-              :menu-props="markerMenuProps"
-              :list-props="chipListProps"
-              :readonly="markersBusy || !!m.SubjUID"
-              :rules="rules.text(false, 0, SubjectMaxLength.Name, $gettext('Name'))"
-              return-object
-              hide-no-data
-              hide-details="auto"
-              single-line
-              open-on-clear
-              append-icon=""
-              :menu-icon="null"
-              density="compact"
-              bg-color="background"
-              autocomplete="off"
-              class="meta-inline-edit meta-inline-marker"
-              :class="{ 'meta-inline-marker--named': m.SubjUID }"
-              @focus="loadChipOptions('people')"
-              @update:model-value="(v) => onPickPerson(m, v)"
-              @update:search="(v) => setMarkerInputValue(m.UID, v)"
-              @keydown.enter.stop.prevent="confirmMarkerName(m, 'enter')"
-              @keydown.escape.stop.prevent="cancelMarkerName(m)"
-              @blur="confirmMarkerName(m, 'blur')"
-              @click.stop
-            >
-              <template v-if="m.SubjUID && markersEdit" #append-inner>
-                <v-btn
-                  :disabled="markersBusy"
-                  :title="$gettext('Unassign')"
-                  icon="mdi-eject"
-                  density="compact"
-                  variant="plain"
-                  size="x-small"
-                  class="meta-marker-clear-subject"
-                  @mousedown.prevent
-                  @click.stop="onClearSubject(m)"
-                ></v-btn>
-              </template>
-            </v-combobox>
-            <v-list-item-title v-else-if="m.Name" class="meta-person__name"><bdi>{{ $util.balanceBidi(m.Name) }}</bdi></v-list-item-title>
-            <v-list-item-title v-else class="meta-person__name meta-person__unnamed">{{ $gettext("Unknown") }}</v-list-item-title>
-          </v-list-item>
-        </template>
-
         <template v-if="canViewAlbums && (albums.length > 0 || isEditable)">
           <v-divider class="my-3"></v-divider>
           <v-list-item class="metadata__item meta-albums">
@@ -341,71 +175,6 @@
               @update:model-value="onAlbumSelected"
               @keydown.enter.stop.prevent="onAlbumEnter"
               @keydown.escape.stop.prevent="onChipEscape('albums')"
-            ></v-combobox>
-          </v-list-item>
-        </template>
-
-        <template v-if="canViewLabels && (labels.length > 0 || isEditable)">
-          <v-divider class="my-3"></v-divider>
-          <v-list-item class="metadata__item meta-labels">
-            <div class="text-subtitle-2">{{ $gettext("Labels") }}</div>
-            <template v-if="isEditable && chipState.labels.removals.length > 0" #append>
-              <p-lightbox-sidebar-toolbar :editing="true" :can-undo="true" chip-mode @confirm="confirmLabels" @undo="undoChipRemovals('labels')" />
-            </template>
-          </v-list-item>
-          <v-list-item v-if="visibleLabels.length > 0" class="metadata__item metadata__chips meta-labels">
-            <div class="d-flex flex-wrap ga-1">
-              <span
-                v-for="l in visibleLabels"
-                :key="l.Label.UID"
-                tabindex="0"
-                class="meta-chip meta-chip--primary"
-                :title="l.Label.Name"
-                @click.stop.prevent="onChipActivate('labels', l)"
-                @keydown.enter.stop.prevent="onChipActivate('labels', l)"
-                @keydown.delete.stop.prevent="onChipDelete('labels', l)"
-              >
-                <span class="meta-chip__label text-truncate"><bdi>{{ $util.balanceBidi(l.Label.Name) }}</bdi></span>
-                <button
-                  v-if="isEditable"
-                  type="button"
-                  tabindex="-1"
-                  class="ms-1 meta-chip__remove meta-icon-btn"
-                  :title="$gettext('Remove')"
-                  :aria-label="$gettext('Remove')"
-                  @mousedown.prevent
-                  @click.stop.prevent="onChipDelete('labels', l)"
-                >
-                  <v-icon icon="mdi-close-circle" size="x-small"></v-icon>
-                </button>
-              </span>
-            </div>
-          </v-list-item>
-          <v-list-item v-if="isEditable" class="metadata__item meta-labels">
-            <v-combobox
-              :key="chipState.labels.key"
-              v-model="chipState.labels.input"
-              v-model:search="chipState.labels.search"
-              :items="availableLabelOptions"
-              item-title="Name"
-              item-value="Name"
-              return-object
-              :placeholder="$gettext('Select or create labels')"
-              hide-details
-              hide-no-data
-              single-line
-              append-icon=""
-              :menu-icon="null"
-              density="compact"
-              bg-color="background"
-              autocomplete="off"
-              :menu-props="chipMenuProps"
-              :list-props="chipListProps"
-              class="meta-inline-edit"
-              @focus="loadChipOptions('labels')"
-              @update:model-value="onLabelSelected"
-              @keydown.enter.stop.prevent="onLabelEnter"
-              @keydown.escape.stop.prevent="onChipEscape('labels')"
             ></v-combobox>
           </v-list-item>
         </template>
@@ -646,7 +415,7 @@ export default {
     // resource grant. People is admin/client-only in CE rules (see
     // internal/auth/acl/rules.go); Plus/Pro/Portal may extend.
     canViewPeople() {
-      return this.$config.allow("people", "search");
+      return this.$config.feature("people") && this.$config.allow("people", "search");
     },
     // canViewLabels gates the Labels section on the backend's labels
     // resource grant. Same shape as canViewPeople.
@@ -904,7 +673,7 @@ export default {
       };
     },
     detailsFields() {
-      return ["subject", "copyright", "artist", "license", "keywords", "notes"].map((k) => this.fieldRegistry[k]);
+      return ["notes"].map((k) => this.fieldRegistry[k]);
     },
     showDetailsSection() {
       if (!this.canViewLibrary) {
@@ -1125,14 +894,8 @@ export default {
     // focused. The shared cache (common/typeahead-cache.js) dedupes
     // concurrent callers, so remounts during batch-edit cost nothing.
     if (this.isEditable) {
-      if (this.canViewLabels) {
-        this.loadChipOptions("labels");
-      }
       if (this.canViewAlbums) {
         this.loadChipOptions("albums");
-      }
-      if (this.canViewPeople) {
-        this.loadChipOptions("people");
       }
     }
   },

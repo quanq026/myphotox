@@ -13,7 +13,6 @@ import Albums from "page/albums.vue";
 import AlbumPhotos from "page/album/photos.vue";
 import Library from "page/library.vue";
 import Settings from "page/settings.vue";
-import Admin from "page/admin.vue";
 import Login from "page/auth/login.vue";
 import About from "page/about/about.vue";
 import License from "page/about/license.vue";
@@ -102,26 +101,6 @@ export default [
     beforeEnter: (to, from, next) => {
       $session.signOut();
       next({ name: loginRoute });
-    },
-  },
-  {
-    name: "admin",
-    path: "/admin/:pathMatch(.*)*",
-    component: Admin,
-    meta: {
-      title: $gettext("Settings"),
-      requiresAuth: true,
-      settings: true,
-      background: "background",
-    },
-    beforeEnter: (to, from, next) => {
-      if ($session.loginRequired()) {
-        next({ name: loginRoute });
-      } else if ($config.deny("users", "access_all")) {
-        next({ name: $session.getDefaultRoute() });
-      } else {
-        next();
-      }
     },
   },
   {

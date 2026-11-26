@@ -36,12 +36,6 @@
                 <th class="col-taken text-start hidden-xs">
                   {{ $gettext("Taken") }}
                 </th>
-                <th class="col-md text-start hidden-sm-and-down">
-                  {{ $gettext("Camera") }}
-                </th>
-                <th class="col-lg text-start hidden-md-and-down">
-                  {{ showName ? $gettext("Name") : $gettext("Location") }}
-                </th>
                 <th v-if="!isSharedView" class="col-xs text-center"></th>
               </tr>
             </thead>
@@ -97,17 +91,6 @@
                 <td class="meta-data meta-date hidden-xs text-start col-taken" :title="m.getDateString()">
                   <span class="text-truncate clickable" @click.stop.prevent="openDate(index)">
                     {{ m.shortDateString() }}
-                  </span>
-                </td>
-                <td class="meta-data hidden-sm-and-down text-start col-md">
-                  <span class="text-truncate clickable" @click.stop.prevent="editPhoto(index)"> {{ m.CameraMake }} {{ m.CameraModel }} </span>
-                </td>
-                <td class="meta-data hidden-md-and-down text-start col-lg">
-                  <span v-if="m.Country !== 'zz' && showLocation" class="text-truncate clickable" @click.stop.prevent="openLocation(index)">
-                    {{ m.locationInfo() }}
-                  </span>
-                  <span v-else class="text-truncate">
-                    {{ m.locationInfo() }}
                   </span>
                 </td>
                 <td v-if="!isSharedView" class="text-center col-xs">

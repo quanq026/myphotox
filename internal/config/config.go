@@ -304,9 +304,6 @@ func (c *Config) Init() error {
 	// Report the download token configuration.
 	c.reportDownloadTokenOptions()
 
-	// Show support information.
-	c.logMembershipHint()
-
 	// Show log message.
 	log.Debugf("config: successfully initialized [%s]", time.Since(start))
 	c.ready.Store(true)
@@ -923,7 +920,7 @@ func (c *Config) SerialChecksum() string {
 // Name returns the app name.
 func (c *Config) Name() string {
 	if c.options.Name == "" {
-		return "PhotoPrism"
+		return "MyPhotoX"
 	}
 
 	return c.options.Name
@@ -932,7 +929,7 @@ func (c *Config) Name() string {
 // About returns the app about string.
 func (c *Config) About() string {
 	if c.options.About == "" {
-		return "PhotoPrism®"
+		return "MyPhotoX"
 	}
 
 	return c.options.About
@@ -941,7 +938,7 @@ func (c *Config) About() string {
 // Edition returns the edition name.
 func (c *Config) Edition() string {
 	if c.options.Edition == "" {
-		return "ce"
+		return "lite"
 	}
 
 	return c.options.Edition

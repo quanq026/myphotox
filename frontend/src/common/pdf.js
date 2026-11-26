@@ -3,7 +3,7 @@ export function isPdfDocument() {
 }
 
 export async function loadPdfDocument() {
-  throw new Error("PDF viewer is disabled in PhotoPrism Lite");
+  throw new Error("PDF viewer is disabled in MyPhotoX");
 }
 
 export function renderPdfPage() {

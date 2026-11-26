@@ -717,7 +717,7 @@ var Flags = CliFlags{
 		Flag: &cli.StringFlag{
 			Name:    "site-caption",
 			Usage:   "short `CAPTION` or tagline shown alongside the title",
-			Value:   "AI-Powered Photos App",
+			Value:   "Self-Hosted Photos App",
 			EnvVars: EnvVars("SITE_CAPTION"),
 		}}, {
 		Flag: &cli.StringFlag{

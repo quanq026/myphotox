@@ -10,14 +10,14 @@ set -e
 BUILD_OS=$(uname -s)
 BUILD_ARCH=$("$(dirname "$0")/dist/arch.sh")
 BUILD_DATE=$(date -u +%y%m%d)
-BUILD_VERSION=$(git describe --always 2>/dev/null || echo "lite")
+BUILD_VERSION=$(git describe --always 2>/dev/null || echo "myphotox")
 BUILD_TAG=${BUILD_DATE}-${BUILD_VERSION}
 BUILD_ID=${BUILD_TAG}-${BUILD_OS}-$(echo "${BUILD_ARCH}" |  tr '[:lower:]' '[:upper:]')
-BUILD_BIN=${2:-photoprism}
+BUILD_BIN=${2:-myphotox}
 GO_BIN=${GO_BIN:-go}
 GO_VER=$($GO_BIN version)
 
-echo "Building PhotoPrism ${BUILD_ID} ($1)..."
+echo "Building MyPhotoX ${BUILD_ID} ($1)..."
 
 if [[ $1 == "develop" ]]; then
   BUILD_CMD=("$GO_BIN" build -tags="debug,develop" -ldflags "-X main.version=${BUILD_ID}-DEVELOP" -o "${BUILD_BIN}" cmd/photoprism/photoprism.go)

@@ -154,7 +154,7 @@
                 class="ma-0 pa-0 input-download"
                 density="compact"
                 :label="$gettext('Download')"
-                :hint="$gettext('Enable downloading of original and sidecar files from the web interface.')"
+                :hint="$gettext('Enable downloading of media files from the web interface.')"
                 prepend-icon="mdi-download"
                 persistent-hint
                 @update:model-value="onChange"
@@ -199,7 +199,7 @@
                 class="ma-0 pa-0 input-edit"
                 density="compact"
                 :label="$gettext('Edit')"
-                :hint="$gettext('Allow editing of metadata such as title, description, date, and location.')"
+                :hint="$gettext('Allow editing of metadata such as title, description, and date.')"
                 prepend-icon="mdi-pencil"
                 persistent-hint
                 @update:model-value="onChange"
@@ -214,7 +214,7 @@
                 class="ma-0 pa-0 input-batch-edit"
                 density="compact"
                 :label="$gettext('Batch Edit')"
-                :hint="$gettext('Allow editing the metadata, labels, and albums of multiple pictures at once.')"
+                :hint="$gettext('Allow editing the metadata and albums of multiple pictures at once.')"
                 prepend-icon="mdi-form-select"
                 persistent-hint
                 @update:model-value="onChange"

@@ -3,13 +3,6 @@ package tensorflow
 import (
 	"encoding/json"
 	"fmt"
-	"os"
-	"path/filepath"
-
-	pb "github.com/wamuir/graft/tensorflow/core/protobuf/for_core_protos_go_proto"
-	"google.golang.org/protobuf/proto"
-
-	"github.com/photoprism/photoprism/pkg/clean"
 )
 
 // ExpectedChannels defines the expected number of channels.
@@ -455,33 +448,6 @@ func (m ModelInfo) IsComplete() bool {
 }
 
 // GetModelTagsInfo reads a SavedModel and returns its available meta graph tags.
-func GetModelTagsInfo(savedModelPath string) ([]ModelInfo, error) {
-	savedModel := filepath.Join(savedModelPath, "saved_model.pb")
-
-	data, err := os.ReadFile(savedModel) //nolint:gosec // savedModel path derived from trusted model directory
-
-	if err != nil {
-		return nil, fmt.Errorf("vision: failed to read %s (%s)", clean.Path(savedModel), clean.Error(err))
-	}
-
-	model := new(pb.SavedModel)
-
-	err = proto.Unmarshal(data, model)
-
-	if err != nil {
-		return nil, fmt.Errorf("vision: failed to unmarshal %s (%s)", clean.Path(savedModel), clean.Error(err))
-	}
-
-	models := make([]ModelInfo, 0)
-	metas := model.GetMetaGraphs()
-
-	for i := range metas {
-		def := metas[i].GetMetaInfoDef()
-		models = append(models, ModelInfo{
-			TFVersion: def.GetTensorflowVersion(),
-			Tags:      def.GetTags(),
-		})
-	}
-
-	return models, nil
+func GetModelTagsInfo(_ string) ([]ModelInfo, error) {
+	return nil, fmt.Errorf("vision: tensorflow support is disabled in MyPhotoX")
 }

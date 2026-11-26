@@ -8,51 +8,6 @@
             <v-row class="align-start" density="compact">
               <v-col cols="8" sm="9" md="10" class="pa-0 d-flex align-self-stretch">
                 <v-row class="align-start" density="compact">
-                  <v-col md="2" class="hidden-sm-and-down">
-                    <v-text-field
-                      v-model="user.Details.NameTitle"
-                      density="comfortable"
-                      :disabled="busy"
-                      maxlength="32"
-                      autocomplete="off"
-                      autocorrect="off"
-                      autocapitalize="none"
-                      :label="$pgettext('Account', 'Title')"
-                      class="input-name-title"
-                      :rules="rules.text(false, 0, 32, $pgettext('Account', 'Title'))"
-                      @change="onChangeName"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col md="6" class="hidden-sm-and-down">
-                    <v-text-field
-                      v-model="user.Details.GivenName"
-                      density="comfortable"
-                      :disabled="busy"
-                      maxlength="64"
-                      autocomplete="off"
-                      autocorrect="off"
-                      autocapitalize="none"
-                      :label="$gettext('Given Name')"
-                      class="input-given-name"
-                      :rules="rules.text(false, 1, 64, $gettext('Given Name'))"
-                      @change="onChangeName"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col md="4" class="hidden-sm-and-down">
-                    <v-text-field
-                      v-model="user.Details.FamilyName"
-                      density="comfortable"
-                      :disabled="busy"
-                      maxlength="64"
-                      autocomplete="off"
-                      autocorrect="off"
-                      autocapitalize="none"
-                      :label="$gettext('Family Name')"
-                      class="input-family-name"
-                      :rules="rules.text(false, 1, 64, $gettext('Family Name'))"
-                      @change="onChangeName"
-                    ></v-text-field>
-                  </v-col>
                   <v-col cols="12" md="5">
                     <v-text-field
                       v-model="user.DisplayName"
@@ -147,165 +102,23 @@
                   <v-icon end>mdi-lock</v-icon>
                 </v-btn>
               </v-col>
-              <v-col cols="12" sm="6">
-                <v-btn
-                  block
-                  variant="flat"
-                  color="button"
-                  class="action-passcode-dialog"
-                  :disabled="isPublic || isDemo || user.disablePasscodeSetup(session.hasPassword())"
-                  @click.stop="showDialog('passcode')"
-                >
-                  {{ $gettext(`2-Factor Authentication`) }}
-                  <v-icon v-if="user.AuthMethod === '2fa'" end>mdi-shield-alert</v-icon>
-                  <v-icon v-else-if="user.disablePasscodeSetup(session.hasPassword())" end>mdi-shield-check</v-icon>
-                  <v-icon v-else end>mdi-shield-alert</v-icon>
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card-actions>
-        </v-card>
-        <v-card flat tile class="my-3 pa-0 bg-background">
-          <v-card-title class="ma-0 pa-2 text-subtitle-2">
-            {{ $gettext(`Birth Date`) }}
-          </v-card-title>
-          <v-card-actions class="ma-0 pa-0">
-            <v-row class="align-start" density="compact">
-              <v-col cols="6" sm="3">
-                <v-combobox
-                  :model-value="user?.Details?.BirthDay > 0 ? user.Details.BirthDay : null"
-                  :disabled="busy"
-                  :label="$gettext('Day')"
-                  :placeholder="$gettext('Unknown')"
-                  density="comfortable"
-                  autocomplete="off"
-                  hide-no-data
-                  hide-details
-                  item-title="text"
-                  item-value="value"
-                  :items="options.Days()"
-                  validate-on="input"
-                  :rules="rules.day(false)"
-                  class="input-birth-day"
-                  @update:model-value="setBirthDay"
-                >
-                </v-combobox>
-              </v-col>
-              <v-col cols="6" sm="3">
-                <v-combobox
-                  :model-value="user?.Details?.BirthMonth > 0 ? user.Details.BirthMonth : null"
-                  :disabled="busy"
-                  :label="$gettext('Month')"
-                  :placeholder="$gettext('Unknown')"
-                  density="comfortable"
-                  autocomplete="off"
-                  hide-no-data
-                  hide-details
-                  item-title="text"
-                  item-value="value"
-                  :items="options.MonthsShort()"
-                  validate-on="input"
-                  :rules="rules.month(false)"
-                  class="input-birth-month"
-                  @update:model-value="setBirthMonth"
-                >
-                </v-combobox>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-combobox
-                  :model-value="user?.Details?.BirthYear > 0 ? user.Details.BirthYear : null"
-                  :disabled="busy"
-                  :label="$gettext('Year')"
-                  :placeholder="$gettext('Unknown')"
-                  density="comfortable"
-                  autocomplete="off"
-                  hide-no-data
-                  hide-details
-                  :items="options.Years(1900)"
-                  validate-on="input"
-                  :rules="rules.year(false, 1000)"
-                  class="input-birth-year"
-                  @update:model-value="setBirthYear"
-                >
-                </v-combobox>
-              </v-col>
-            </v-row>
-          </v-card-actions>
-        </v-card>
-        <v-card flat tile class="my-3 pa-0 bg-background">
-          <v-card-title class="ma-0 pa-2 text-subtitle-2">
-            {{ $gettext(`Contact Details`) }}
-          </v-card-title>
-          <v-card-actions class="ma-0 pa-0">
-            <v-row class="align-start" density="compact">
-              <v-col cols="12" sm="7">
-                <v-text-field
-                  v-model="user.Details.Location"
-                  density="comfortable"
-                  :disabled="busy"
-                  maxlength="500"
-                  autocomplete="off"
-                  autocorrect="off"
-                  autocapitalize="none"
-                  :label="$gettext('Location')"
-                  class="input-location"
-                  :rules="rules.text(false, 1, 500, $gettext('Location'))"
-                  @change="onChange"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="5">
-                <v-autocomplete
-                  v-model="user.Details.Country"
-                  :disabled="busy"
-                  :label="$gettext('Country')"
-                  density="comfortable"
-                  autocomplete="off"
-                  item-value="Code"
-                  item-title="Name"
-                  :items="countries"
-                  class="input-country"
-                  :rules="rules.country()"
-                  @update:model-value="onChange"
-                >
-                </v-autocomplete>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="user.Details.SiteURL"
-                  density="comfortable"
-                  :disabled="busy"
-                  type="url"
-                  maxlength="500"
-                  autocomplete="off"
-                  autocorrect="off"
-                  autocapitalize="none"
-                  :label="$gettext('Website')"
-                  class="input-site-url"
-                  :rules="rules.url()"
-                  @change="onChange"
-                ></v-text-field>
-              </v-col>
             </v-row>
           </v-card-actions>
         </v-card>
       </v-form>
     </div>
-    <p-settings-passcode :visible="dialog.passcode" :model="user" @close="dialog.passcode = false" @update-user="updateUser()"></p-settings-passcode>
     <p-settings-password :visible="dialog.password" :model="user" @close="dialog.password = false"></p-settings-password>
   </div>
 </template>
 
 <script>
-import PSettingsPasscode from "component/settings/passcode.vue";
 import PSettingsPassword from "component/settings/password.vue";
 import User from "model/user";
-import * as options from "options/options";
 import { rules } from "common/form";
 
 export default {
   name: "PSettingsAccount",
   components: {
-    PSettingsPasscode,
     PSettingsPassword,
   },
   data() {
@@ -315,21 +128,15 @@ export default {
 
     return {
       busy: isDemo || isPublic,
-      options,
       rules,
       isDemo,
       isPublic,
       valid: true,
       rtl: this.$isRtl,
       user: user,
-      countries: options.Countries(),
       session: this.$session,
       dialog: {
-        apps: false,
-        connectedApps: false,
-        passcode: false,
         password: false,
-        webdav: false,
       },
     };
   },
@@ -447,42 +254,6 @@ export default {
           this.$notify.success(this.$gettext("Settings saved"));
         })
         .finally(() => (this.busy = false));
-    },
-    setBirthDay(v) {
-      if (Number.isInteger(v?.value)) {
-        this.user.Details.BirthDay = v?.value;
-        this.onChange();
-      } else if (!v) {
-        this.user.Details.BirthDay = -1;
-        this.onChange();
-      } else if (this.rules.isNumberRange(v, 1, 31)) {
-        this.user.Details.BirthDay = Number(v);
-        this.onChange();
-      }
-    },
-    setBirthMonth(v) {
-      if (Number.isInteger(v?.value)) {
-        this.user.Details.BirthMonth = v?.value;
-        this.onChange();
-      } else if (!v) {
-        this.user.Details.BirthMonth = -1;
-        this.onChange();
-      } else if (this.rules.isNumberRange(v, 1, 12)) {
-        this.user.Details.BirthMonth = Number(v);
-        this.onChange();
-      }
-    },
-    setBirthYear(v) {
-      if (Number.isInteger(v?.value)) {
-        this.user.Details.BirthYear = v?.value;
-        this.onChange();
-      } else if (!v) {
-        this.user.Details.BirthYear = -1;
-        this.onChange();
-      } else if (this.rules.isNumberRange(v, 1000, Number(new Date().getUTCFullYear()))) {
-        this.user.Details.BirthYear = Number(v);
-        this.onChange();
-      }
     },
   },
 };

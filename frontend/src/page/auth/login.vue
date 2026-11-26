@@ -179,17 +179,6 @@
                       </a>
                     </div>
                   </v-col>
-                  <template v-if="config.ext.oidc.enabled && !enterCode">
-                    <v-col cols="12" class="oidc-actions">
-                      <v-divider />
-                      <div class="text-center oidc-buttons mt-6">
-                        <v-btn :disabled="loading" color="highlight" variant="flat" block class="action-oidc-login" @click.stop.prevent="onOidcLogin">
-                          <img alt="" class="oidc-icon v-icon--start mx-1" :src="config.ext.oidc.icon" />
-                          <span>{{ $gettext(`Continue with %{s}`, { s: config.ext.oidc.provider }) }}</span>
-                        </v-btn>
-                      </div>
-                    </v-col>
-                  </template>
                 </v-row>
               </v-card-text>
             </v-card>
@@ -251,7 +240,7 @@ export default {
         }
       }
 
-      return "section-photoprism";
+      return "section-myphotox";
     },
     usernameAutocomplete() {
       return `${this.autocompleteSection} username`;

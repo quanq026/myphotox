@@ -284,26 +284,6 @@
                     </v-list-item>
                   </template>
 
-                  <v-list-item
-                    v-if="canManageUsers"
-                    :to="{ path: '/admin/users' }"
-                    :exact="false"
-                    variant="text"
-                    class="nav-admin-users"
-                    :ripple="false"
-                    @click.stop=""
-                  >
-                    <v-list-item-title :class="`menu-item`">
-                      {{ $gettext(`Users`) }}
-                    </v-list-item-title>
-                  </v-list-item>
-
-                  <v-list-item :to="{ name: 'license' }" :exact="true" variant="text" class="nav-license" :ripple="false" @click.stop="">
-                    <v-list-item-title :class="`menu-item`">
-                      {{ $gettext(`License`) }}
-                    </v-list-item-title>
-                  </v-list-item>
-
                   <v-list-item :to="{ name: 'about' }" :exact="true" variant="text" class="nav-about" :ripple="false" @click.stop="">
                     <v-list-item-title :class="`menu-item`">
                       {{ $gettext(`About`) }}
@@ -634,10 +614,10 @@ export default {
       appStorage.setItem("navigation.mode", `${this.isMini}`);
     },
     showUsageInfo() {
-      this.$router.push({ path: "/index/files" });
+      this.$router.push({ name: "library_index" });
     },
     showServerConnectionHelp() {
-      this.$router.push({ path: "/help/websockets" });
+      this.reloadApp();
     },
     showLegalInfo() {
       if (this.config.legalUrl) {

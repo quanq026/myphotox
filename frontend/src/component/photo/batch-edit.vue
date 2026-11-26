@@ -264,165 +264,6 @@
                       @update:model-value="(val) => changeSelectValue(val, 'select-field', 'TimeZone')"
                     ></v-autocomplete>
                   </v-col>
-                  <v-col cols="12" class="text-subtitle-2">{{ $gettext(`Location`) }}</v-col>
-                  <v-col cols="12" md="6">
-                    <p-meta-location-input
-                      :latlng="currentCoordinates"
-                      :placeholder="locationPlaceholder"
-                      :persistent-placeholder="true"
-                      hide-details
-                      :label="locationLabel"
-                      density="comfortable"
-                      validate-on="input"
-                      :show-map-button="!placesDisabled"
-                      :map-button-title="$gettext('Adjust Location')"
-                      :map-button-disabled="placesDisabled"
-                      :is-mixed="isLocationMixed"
-                      :is-deleted="isLocationDeleted"
-                      class="input-coordinates"
-                      @update:latlng="updateLatLng"
-                      @changed="onLocationChanged"
-                      @open-map="adjustLocation"
-                      @delete="onLocationDelete"
-                      @undo="onLocationUndo"
-                    ></p-meta-location-input>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-autocomplete
-                      v-model="formData.Country.value"
-                      :label="$gettext('Country')"
-                      hide-details
-                      hide-no-data
-                      autocomplete="off"
-                      item-value="Code"
-                      item-title="Name"
-                      :items="getFieldData('select-field', 'Country').items"
-                      :placeholder="getFieldData('select-field', 'Country').placeholder"
-                      :persistent-placeholder="getFieldData('select-field', 'Country').persistent"
-                      :readonly="isCountryReadOnly"
-                      density="comfortable"
-                      validate-on="input"
-                      class="input-country"
-                      @update:model-value="(val) => changeSelectValue(val, 'select-field', 'Country')"
-                    >
-                    </v-autocomplete>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="3">
-                    <v-text-field
-                      hide-details
-                      flat
-                      autocomplete="off"
-                      autocorrect="off"
-                      autocapitalize="none"
-                      :label="$gettext('Altitude (m)')"
-                      :model-value="formData.Altitude.value"
-                      :placeholder="getFieldData('input-field', 'Altitude').placeholder"
-                      :persistent-placeholder="getFieldData('input-field', 'Altitude').persistent"
-                      color="surface-variant"
-                      density="comfortable"
-                      validate-on="input"
-                      class="input-altitude"
-                      @update:model-value="(val) => changeValue(val, 'input-field', 'Altitude')"
-                    >
-                      <template v-if="fieldAction('input-field', 'Altitude')" #append-inner>
-                        <p-input-action v-bind="fieldAction('input-field', 'Altitude')" @click="toggleField('input-field', 'Altitude')"></p-input-action>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-                <v-row density="compact">
-                  <v-col cols="12" class="text-subtitle-2">{{ $pgettext(`Edit`, `Content`) }}</v-col>
-                  <v-col cols="12" sm="8">
-                    <v-textarea
-                      :rules="rules.text(false, 0, PhotoMaxLength.Subject, $gettext('Subject'))"
-                      autocomplete="off"
-                      auto-grow
-                      :label="$gettext('Subject')"
-                      :model-value="formData.DetailsSubject.value"
-                      :placeholder="getFieldData('text-field', 'DetailsSubject').placeholder"
-                      :persistent-placeholder="getFieldData('text-field', 'DetailsSubject').persistent"
-                      :rows="1"
-                      density="comfortable"
-                      class="input-subject"
-                      @update:model-value="(val) => changeValue(val, 'text-field', 'DetailsSubject')"
-                    >
-                      <template v-if="fieldAction('text-field', 'DetailsSubject')" #append-inner>
-                        <p-input-action v-bind="fieldAction('text-field', 'DetailsSubject')" @click="toggleField('text-field', 'DetailsSubject')"></p-input-action>
-                      </template>
-                    </v-textarea>
-                  </v-col>
-                  <v-col cols="12" sm="4">
-                    <v-autocomplete
-                      v-model="formData.Type.value"
-                      :label="$gettext('Type')"
-                      autocomplete="off"
-                      hide-details
-                      hide-no-data
-                      :items="getFieldData('select-field', 'Type').items"
-                      :placeholder="getFieldData('select-field', 'Type').placeholder"
-                      :persistent-placeholder="getFieldData('select-field', 'Type').persistent"
-                      item-title="text"
-                      item-value="value"
-                      density="comfortable"
-                      validate-on="input"
-                      class="input-type"
-                      @update:model-value="(val) => changeSelectValue(val, 'select-field', 'Type')"
-                    >
-                    </v-autocomplete>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field
-                      :rules="rules.text(false, 0, PhotoMaxLength.Copyright, $gettext('Copyright'))"
-                      autocomplete="off"
-                      :label="$gettext('Copyright')"
-                      :model-value="formData.DetailsCopyright.value"
-                      :placeholder="getFieldData('text-field', 'DetailsCopyright').placeholder"
-                      :persistent-placeholder="getFieldData('text-field', 'DetailsCopyright').persistent"
-                      density="comfortable"
-                      class="input-copyright"
-                      @update:model-value="(val) => changeValue(val, 'text-field', 'DetailsCopyright')"
-                    >
-                      <template v-if="fieldAction('text-field', 'DetailsCopyright')" #append-inner>
-                        <p-input-action v-bind="fieldAction('text-field', 'DetailsCopyright')" @click="toggleField('text-field', 'DetailsCopyright')"></p-input-action>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6">
-                    <v-text-field
-                      :rules="rules.text(false, 0, PhotoMaxLength.Artist, $gettext('Artist'))"
-                      autocomplete="off"
-                      :label="$gettext('Artist')"
-                      :model-value="formData.DetailsArtist.value"
-                      :placeholder="getFieldData('text-field', 'DetailsArtist').placeholder"
-                      :persistent-placeholder="getFieldData('text-field', 'DetailsArtist').persistent"
-                      density="comfortable"
-                      class="input-artist"
-                      @update:model-value="(val) => changeValue(val, 'text-field', 'DetailsArtist')"
-                    >
-                      <template v-if="fieldAction('text-field', 'DetailsArtist')" #append-inner>
-                        <p-input-action v-bind="fieldAction('text-field', 'DetailsArtist')" @click="toggleField('text-field', 'DetailsArtist')"></p-input-action>
-                      </template>
-                    </v-text-field>
-                  </v-col>
-                  <v-col cols="12">
-                    <v-textarea
-                      :rules="rules.text(false, 0, PhotoMaxLength.License, $gettext('License'))"
-                      autocomplete="off"
-                      auto-grow
-                      :label="$gettext('License')"
-                      :model-value="formData.DetailsLicense.value"
-                      :placeholder="getFieldData('text-field', 'DetailsLicense').placeholder"
-                      :persistent-placeholder="getFieldData('text-field', 'DetailsLicense').persistent"
-                      :rows="1"
-                      density="comfortable"
-                      class="input-license"
-                      @update:model-value="(val) => changeValue(val, 'text-field', 'DetailsLicense')"
-                    >
-                      <template v-if="fieldAction('text-field', 'DetailsLicense')" #append-inner>
-                        <p-input-action v-bind="fieldAction('text-field', 'DetailsLicense')" @click="toggleField('text-field', 'DetailsLicense')"></p-input-action>
-                      </template>
-                    </v-textarea>
-                  </v-col>
                 </v-row>
                 <v-row v-if="canViewAlbums" density="compact">
                   <v-col cols="12" class="text-subtitle-2">{{ $gettext(`Albums`) }}</v-col>
@@ -437,24 +278,6 @@
                       :max-length="AlbumMaxLength.Title"
                       class="input-albums"
                       @update:items="onAlbumsUpdate"
-                    />
-                  </v-col>
-                </v-row>
-                <v-row v-if="canViewLabels" density="compact">
-                  <v-col cols="12" class="text-subtitle-2">{{ $gettext(`Labels`) }}</v-col>
-                  <v-col cols="12">
-                    <p-input-chip-selector
-                      v-model:items="labelItems"
-                      :available-items="availableLabelOptions"
-                      :resolve-item-from-text="resolveLabelFromText"
-                      :normalize-title-for-compare="normalizeTitleForCompare"
-                      :input-placeholder="$gettext('Select or create labels')"
-                      :empty-text="$gettext('No labels assigned')"
-                      :loading="loading"
-                      :disabled="false"
-                      :max-length="LabelMaxLength.Name"
-                      class="input-labels"
-                      @update:items="onLabelsUpdate"
                     />
                   </v-col>
                 </v-row>
@@ -502,12 +325,6 @@
         </v-col>
       </v-row>
     </v-card>
-    <p-meta-location-dialog
-      :visible="locationDialog"
-      :latlng="currentCoordinates"
-      @close="locationDialog = false"
-      @confirm="confirmLocation"
-    ></p-meta-location-dialog>
   </v-dialog>
 </template>
 <script>
@@ -589,7 +406,7 @@ export default {
       formData: null,
       previousFormData: {},
       deletedFields: {},
-      toggleFieldsArray: ["Scan", "Favorite", "Private", "Panorama"],
+      toggleFieldsArray: ["Favorite"],
       actions: { none: "none", update: "update", add: "add", remove: "remove" },
       locationDialog: false,
       placesDisabled: !this.$config.feature("places"),

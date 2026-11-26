@@ -36,14 +36,6 @@
                 <i :title="$gettext('Taken')" class="mdi mdi-calendar-range" />
                 {{ m.getDateString(true) }}
               </button>
-              <button v-if="m.CameraID > 1 || m.Iso" class="meta-camera action-camera-edit text-truncate">
-                <i class="mdi" :class="m.Type === 'video' ? 'mdi-video-vintage' : 'mdi-camera'" />
-                {{ m.getCameraInfo() }}
-              </button>
-              <button v-if="m.LensID > 1 || m.FocalLength" class="meta-lens action-lens-edit text-truncate">
-                <i class="mdi mdi-camera-iris" />
-                {{ m.getLensInfo() }}
-              </button>
               <button v-if="m.Type === 'video'" class="meta-video text-truncate">
                 <i class="mdi mdi-movie" />
                 {{ m.getVideoInfo() }}
@@ -198,24 +190,6 @@
               <button v-if="m.Year > 0" class="action-open-date meta-date text-truncate" @click.exact="openDate(index)">
                 <i :title="$gettext('Taken')" class="mdi mdi-calendar-range" />
                 {{ m.getDateString(true) }}
-              </button>
-              <button
-                v-if="m.CameraID > 1 || m.Iso"
-                :title="$gettext('Camera')"
-                class="meta-camera action-camera-edit text-truncate"
-                @click.exact="editPhoto(index, 'details')"
-              >
-                <i class="mdi" :class="m.Type === 'video' ? 'mdi-video-vintage' : 'mdi-camera'" />
-                {{ m.getCameraInfo() }}
-              </button>
-              <button
-                v-if="m.LensID > 1 || m.FocalLength"
-                :title="$gettext('Lens')"
-                class="meta-lens action-lens-edit text-truncate"
-                @click.exact="editPhoto(index, 'details')"
-              >
-                <i class="mdi mdi-camera-iris" />
-                {{ m.getLensInfo() }}
               </button>
               <button v-if="m.Type === 'video'" :title="$gettext('Video')" class="meta-video text-truncate" @click.exact="editPhoto(index, 'details')">
                 <i class="mdi mdi-movie" />

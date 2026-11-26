@@ -2588,7 +2588,7 @@ msgstr "Không có thông tin về vị trí"
 
 #: src/page/library/errors.vue:74
 msgid "Log messages appear here whenever PhotoPrism comes across broken files, or there are other potential issues."
-msgstr "Thông báo nhật ký xuất hiện ở đây bất cứ khi nào PhotoPrism gặp phải các tệp bị hỏng hoặc có các sự cố tiềm ẩn khác."
+msgstr "Thông báo nhật ký xuất hiện ở đây bất cứ khi nào MyPhotoX gặp phải các tệp bị hỏng hoặc có các sự cố tiềm ẩn khác."
 
 #: src/component/navigation.vue:348 src/component/navigation.vue:605
 #: src/component/navigation.vue:720
@@ -3015,7 +3015,7 @@ msgstr "Ghi chú:"
 
 #: src/component/service/add.vue:66
 msgid "Note: Only WebDAV servers, like Nextcloud or PhotoPrism, can be configured as remote service for backup and file upload."
-msgstr "Lưu ý: Chỉ các máy chủ WebDAV, như Nextcloud hoặc PhotoPrism, mới có thể được định cấu hình làm dịch vụ từ xa để sao lưu và tải tệp lên."
+msgstr "Lưu ý: Chỉ các máy chủ WebDAV, như Nextcloud hoặc MyPhotoX, mới có thể được định cấu hình làm dịch vụ từ xa để sao lưu và tải tệp lên."
 
 #: src/component/lightbox/sidebar.vue:891
 #: src/component/photo/edit/details.vue:363
@@ -3277,11 +3277,11 @@ msgstr "hình chụp"
 
 #: src/page/about/about.vue:83 src/page/about/about.vue:65
 msgid "PhotoPrism is 100% self-funded and independent."
-msgstr "PhotoPrism được tự tài trợ 100% và độc lập."
+msgstr "MyPhotoX được tự tài trợ 100% và độc lập."
 
 #: src/page/about/about.vue:42 src/page/about/about.vue:28
 msgid "PhotoPrism+ Membership"
-msgstr "PhotoPrism+ Tư cách thành viên"
+msgstr "MyPhotoX+ Tư cách thành viên"
 
 #: src/app/routes.js:326
 msgid "Photos"
@@ -3387,7 +3387,7 @@ msgstr "Ngăn chặn việc tạo các bản sao lưu cơ sở dữ liệu và a
 
 #: src/page/settings/advanced.vue:95
 msgid "Prevent other apps from accessing PhotoPrism as a shared network drive."
-msgstr "Ngăn các ứng dụng khác truy cập PhotoPrism dưới dạng ổ đĩa mạng chung."
+msgstr "Ngăn các ứng dụng khác truy cập MyPhotoX dưới dạng ổ đĩa mạng chung."
 
 #: src/component/photo/edit/files.vue:38
 msgid "Preview"
@@ -4310,7 +4310,7 @@ msgstr "Cảm ơn sự hỗ trợ của bạn!"
 #: src/page/about/about.vue:33 src/page/about/about.vue:34
 #: src/page/about/about.vue:18
 msgid "That's why PhotoPrism was built from the ground up to run wherever you need it, without compromising freedom, privacy, or functionality."
-msgstr "Đó là lý do tại sao PhotoPrism được xây dựng từ đầu để chạy ở bất cứ nơi nào bạn cần mà không ảnh hưởng đến quyền tự do, quyền riêng tư hoặc chức năng."
+msgstr "Đó là lý do tại sao MyPhotoX được xây dựng từ đầu để chạy ở bất cứ nơi nào bạn cần mà không ảnh hưởng đến quyền tự do, quyền riêng tư hoặc chức năng."
 
 #: src/page/library/index.vue:72
 msgid "The index currently contains %{n} hidden files."
@@ -4690,7 +4690,7 @@ msgstr "Những tải lên có thể chứa những hình ảnh như vậy sẽ 
 
 #: src/page/auth/consent.vue:168
 msgid "Use PhotoPrism tools in this app"
-msgstr "Hãy dùng các công cụ của PhotoPrism trong ứng dụng này nhé"
+msgstr "Hãy dùng các công cụ của MyPhotoX trong ứng dụng này nhé"
 
 #: src/page/settings/advanced.vue:372
 msgid "Use Presets"
@@ -4890,11 +4890,11 @@ msgstr "Tải lên WebDAV"
 
 #: src/component/settings/webdav.vue:19
 msgid "WebDAV clients can connect to PhotoPrism using the following URL:"
-msgstr "Máy khách WebDAV có thể kết nối với PhotoPrism bằng URL sau:"
+msgstr "Máy khách WebDAV có thể kết nối với MyPhotoX bằng URL sau:"
 
 #: src/page/services.vue:92
 msgid "WebDAV clients, like Microsoft’s Windows Explorer or Apple's Finder, can connect directly to PhotoPrism."
-msgstr "Các máy khách WebDAV, như Windows Explorer của Microsoft hoặc Finder của Apple, có thể kết nối trực tiếp với PhotoPrism."
+msgstr "Các máy khách WebDAV, như Windows Explorer của Microsoft hoặc Finder của Apple, có thể kết nối trực tiếp với MyPhotoX."
 
 #: src/page/settings/account.vue:348 src/page/settings/account.vue:404
 #: src/page/settings/account.vue:321
@@ -4937,7 +4937,7 @@ msgstr "Đúng"
 #: src/page/about/about.vue:92 src/component/confirm/sponsor.vue:26
 #: src/page/about/about.vue:69 src/page/connect.vue:154
 msgid "You are welcome to contact us at membership@photoprism.app for questions regarding your membership."
-msgstr "Bạn có thể liên hệ với chúng tôi theo địa chỉ member@photoprism.app nếu có câu hỏi liên quan đến tư cách thành viên của bạn."
+msgstr "Bạn có thể liên hệ với chúng tôi theo địa chỉ member@localhost nếu có câu hỏi liên quan đến tư cách thành viên của bạn."
 
 #: src/component/album/clipboard.vue:199 src/component/people/clipboard.vue:121
 msgid "You can only download one album"

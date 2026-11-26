@@ -102,14 +102,9 @@
         <div class="pt-3 text-caption">
           {{ $gettext(`People you share a link with will be able to view public contents.`, { name: model.modelName() }) }}
           {{ $gettext(`A click will copy it to your clipboard.`) }}
-          {{ $gettext(`Any private photos and videos remain private and won't be shared.`) }}
-          {{ $gettext(`Alternatively, you can upload files directly to WebDAV servers like Nextcloud.`) }}
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn variant="flat" color="button" class="action-webdav" @click.stop="upload">
-          {{ $gettext(`WebDAV Upload`) }}
-        </v-btn>
         <v-btn variant="flat" color="button" class="action-close" @click.stop="confirm">
           {{ $gettext(`Close`) }}
         </v-btn>
@@ -133,7 +128,7 @@ export default {
       default: () => {},
     },
   },
-  emits: ["close", "upload"],
+  emits: ["close"],
   data() {
     return {
       expanded: [0],
@@ -234,9 +229,6 @@ export default {
           this.links.splice(index, 1);
         })
         .finally(() => (this.loading = false));
-    },
-    upload() {
-      this.$emit("upload");
     },
     close() {
       this.$emit("close");

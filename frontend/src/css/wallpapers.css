@@ -7,5 +7,5 @@
 }
 
 .background-welcome {
-    background-image: url(https://cdn.photoprism.app/wallpaper/welcome.jpg);
+    background-image: linear-gradient(135deg, #12151e 0%, #1d263b 50%, #0f172a 100%);
 }

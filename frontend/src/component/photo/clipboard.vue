@@ -19,30 +19,6 @@
         </template>
 
         <v-btn
-          v-if="canShare && canServiceUpload && context !== contexts.Archive && context !== contexts.Hidden && context !== contexts.Review"
-          key="action-share"
-          :title="$gettext('Share')"
-          icon="mdi-share"
-          color="share"
-          variant="elevated"
-          density="comfortable"
-          :disabled="selection.length === 0 || busy"
-          class="action-share"
-          @click.stop="dialog.share = true"
-        ></v-btn>
-        <v-btn
-          v-if="canManage && context === contexts.Review"
-          key="action-approve"
-          :title="$gettext('Approve')"
-          icon="mdi-check-bold"
-          color="share"
-          variant="elevated"
-          density="comfortable"
-          :disabled="selection.length === 0 || busy"
-          class="action-approve"
-          @click.stop="batchApprove"
-        ></v-btn>
-        <v-btn
           v-if="canArchive && !album && context === contexts.Archive && context !== contexts.Hidden"
           key="action-restore"
           :title="$gettext('Restore')"
@@ -65,18 +41,6 @@
           :disabled="selection.length === 0 || busy"
           class="action-edit"
           @click.stop="edit"
-        ></v-btn>
-        <v-btn
-          v-if="canTogglePrivate && context !== contexts.Archive && context !== contexts.Hidden"
-          key="action-private"
-          :title="$gettext('Change private flag')"
-          icon="mdi-lock"
-          color="private"
-          variant="elevated"
-          density="comfortable"
-          :disabled="selection.length === 0 || busy"
-          class="action-private"
-          @click.stop="batchPrivate"
         ></v-btn>
         <v-btn
           v-if="canDownload && context !== contexts.Archive"
@@ -159,13 +123,6 @@
       @confirm="batchDelete"
     ></p-confirm-dialog>
     <p-photo-album-dialog :visible="dialog.album" @close="dialog.album = false" @confirm="addToAlbum"></p-photo-album-dialog>
-    <p-service-upload
-      :visible="dialog.share"
-      :items="{ photos: selection }"
-      :model="album"
-      @close="dialog.share = false"
-      @confirm="onShared"
-    ></p-service-upload>
   </div>
 </template>
 <script>

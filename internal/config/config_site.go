@@ -233,7 +233,7 @@ func (c *Config) SitePreview() string {
 		return c.SiteUrl() + strings.TrimPrefix(c.options.SitePreview, "/")
 	}
 
-	return fmt.Sprintf("https://i.photoprism.app/prism?cover=64&style=centered%%20dark&caption=none&title=%s", url.QueryEscape(c.AppName()))
+	return strings.TrimRight(c.SiteUrl(), "/") + path.Join(c.StaticUri(), "icons/logo/256.png")
 }
 
 // LegalInfo returns the legal info text for the page footer.

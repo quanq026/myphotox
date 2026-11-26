@@ -53,9 +53,6 @@
               @click.stop="toggleExpansionPanel"
             ></p-input-action>
           </template>
-          <template v-if="filter.latlng" #append-inner>
-            <p-input-action icon="mdi-map-marker-off" :label="$gettext('Remove Location')" @click.stop="clearLocation"></p-input-action>
-          </template>
         </v-text-field>
 
         <v-btn-toggle
@@ -88,9 +85,6 @@
       </template>
       <template v-else>
         <v-spacer></v-spacer>
-        <v-btn v-if="canAccessLibrary" icon :title="$gettext('Browse')" class="action-browse" @click.stop="onBrowse">
-          <v-icon size="20">mdi-tab</v-icon>
-        </v-btn>
         <v-btn v-if="onClose !== undefined" icon :title="$gettext('Close')" class="action-close" @click.stop="onClose">
           <v-icon>mdi-close</v-icon>
         </v-btn>
@@ -102,47 +96,6 @@
         <v-card v-show="expanded" flat color="secondary">
           <v-card-text class="dense">
             <v-row class="align-center" density="compact">
-              <v-col cols="12" sm="6" md="3" class="p-countries-select">
-                <v-select
-                  :model-value="filter.country"
-                  :label="$gettext('Country')"
-                  :menu-props="{ maxHeight: 346 }"
-                  single-line
-                  hide-details
-                  variant="solo-filled"
-                  :density="density"
-                  :items="countryOptions"
-                  item-title="Name"
-                  item-value="ID"
-                  class="input-countries"
-                  @update:model-value="
-                    (v) => {
-                      onUpdate({ country: v });
-                    }
-                  "
-                >
-                </v-select>
-              </v-col>
-              <v-col cols="12" sm="6" md="3" class="p-camera-select">
-                <v-select
-                  :model-value="filter.camera"
-                  :label="$gettext('Camera')"
-                  :menu-props="{ maxHeight: 346 }"
-                  single-line
-                  hide-details
-                  variant="solo-filled"
-                  :density="density"
-                  :items="cameraOptions"
-                  item-title="Name"
-                  item-value="ID"
-                  @update:model-value="
-                    (v) => {
-                      onUpdate({ camera: v });
-                    }
-                  "
-                >
-                </v-select>
-              </v-col>
               <v-col cols="12" sm="6" md="3" class="p-view-select">
                 <v-select
                   id="viewSelect"
@@ -220,60 +173,6 @@
                 >
                 </v-select>
               </v-col>
-              <!-- v-col cols="12" sm="6" md="3" class="p-lens-select">
-                <v-select @change="dropdownChange"
-                          :label="labels.lens"
-                          flat
-                          variant="solo-filled"
-                          hide-details
-                          color="surface-variant"
-                          bg-color="secondary-light"
-                          item-value="ID"
-                          item-title="Model"
-                          v-model="filter.lens"
-                          :items="lensOptions">
-                </v-select>
-            </v-col -->
-              <v-col cols="12" sm="6" md="3" class="p-color-select">
-                <v-select
-                  :model-value="filter.color"
-                  :label="$gettext('Color')"
-                  :menu-props="{ maxHeight: 346 }"
-                  single-line
-                  hide-details
-                  variant="solo-filled"
-                  :density="density"
-                  :items="colorOptions()"
-                  item-title="Name"
-                  item-value="Slug"
-                  @update:model-value="
-                    (v) => {
-                      onUpdate({ color: v });
-                    }
-                  "
-                >
-                </v-select>
-              </v-col>
-              <v-col cols="12" sm="6" md="3" class="p-category-select">
-                <v-select
-                  :model-value="filter.label"
-                  :label="$gettext('Category')"
-                  :menu-props="{ maxHeight: 346 }"
-                  single-line
-                  hide-details
-                  variant="solo-filled"
-                  :density="density"
-                  :items="categoryOptions"
-                  item-title="Name"
-                  item-value="Slug"
-                  @update:model-value="
-                    (v) => {
-                      onUpdate({ label: v });
-                    }
-                  "
-                >
-                </v-select>
-              </v-col>
             </v-row>
           </v-card-text>
         </v-card>
@@ -294,7 +193,6 @@
 import * as options from "options/options";
 import $api from "common/api";
 import $notify from "common/notify";
-import links from "common/links";
 import Photo from "model/photo";
 import * as contexts from "options/contexts";
 
@@ -413,7 +311,7 @@ export default {
         case contexts.Review:
           return options.SortOrderOptions(["newest", "oldest", "added", "title", "name", "size", "duration"]);
         default:
-          return options.SortOrderOptions(["newest", "oldest", "added", "edited", "title", "name", "size", "duration", "similar", "relevance"]);
+          return options.SortOrderOptions(["newest", "oldest", "added", "edited", "title", "name", "size", "duration", "relevance"]);
       }
     },
   },
@@ -452,22 +350,6 @@ export default {
           click: () => {
             this.showUpload();
           },
-        },
-        {
-          name: "docs",
-          icon: "mdi-book-open-page-variant-outline",
-          text: this.$gettext("Get Started"),
-          visible: this.context !== contexts.Hidden,
-          href: links.firstSteps,
-          target: "_blank",
-        },
-        {
-          name: "troubleshooting",
-          icon: "mdi-book-open-page-variant-outline",
-          text: this.$gettext("Troubleshooting"),
-          visible: this.context === contexts.Hidden,
-          href: links.missingPictures,
-          target: "_blank",
         },
       ];
     },

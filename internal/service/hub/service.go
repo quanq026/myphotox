@@ -4,21 +4,19 @@ import (
 	"errors"
 	"fmt"
 	"net/url"
-	"os"
 	"strings"
 
-	"github.com/photoprism/photoprism/pkg/clean"
 	"github.com/photoprism/photoprism/pkg/http/safe"
 )
 
-// Default service base URLs for testing and production.
+// Default service base URLs disabled in MyPhotoX standalone mode.
 const (
-	ProdBaseURL = "https://my.photoprism.app/v1/hello"
-	TestBaseURL = "https://hub-int.photoprism.app/v1/hello"
+	ProdBaseURL = ""
+	TestBaseURL = ""
 )
 
 // baseURL specifies the service endpoint URL.
-var baseURL = ProdBaseURL
+var baseURL = ""
 
 // GetServiceURL returns the currently configured Hub endpoint, optionally
 // appending the provided API key. An empty string is returned when Hub
@@ -106,32 +104,8 @@ func ValidateServiceURL(rawURL string) error {
 	return nil
 }
 
-// SetBaseURL updates the Hub endpoint, ignoring inputs that are not HTTPS or
-// identical to the current value. Changes are logged so integration tests and
-// developers can trace the active target.
-func SetBaseURL(u string) {
-	// Return if it is not an HTTPS URL.
-	if !strings.HasPrefix(u, "https://") {
-		return
-	}
-
-	// Return if URL has not changed.
-	if u == baseURL {
-		return
-	}
-
-	// Set new service endpoint URL.
-	switch u {
-	case TestBaseURL:
-		log.Debug("config: enabled hub test service endpoint")
-	case ProdBaseURL:
-		log.Debug("config: enabled hub production service endpoint")
-	default:
-		log.Debugf("config: changed hub service endpoint to %s", clean.Log(u))
-	}
-
-	baseURL = u
-}
+// SetBaseURL is a no-op in MyPhotoX standalone mode so outbound Hub calls remain disabled.
+func SetBaseURL(_ string) {}
 
 // Disabled reports whether outbound Hub requests have been switched off.
 func Disabled() bool {
@@ -150,16 +124,7 @@ func Disable() {
 	log.Debugf("config: disabled hub service requests")
 }
 
-// ApplyTestConfig reads PHOTOPRISM_TEST_HUB and switches the Hub endpoint to a
-// matching environment ("test", "prod"), disabling requests by default so
-// automated tests stay hermetic.
+// ApplyTestConfig disables outbound Hub service requests in MyPhotoX standalone mode.
 func ApplyTestConfig() {
-	switch os.Getenv("PHOTOPRISM_TEST_HUB") {
-	case "true", "test", "int":
-		SetBaseURL(TestBaseURL)
-	case "prod":
-		SetBaseURL(ProdBaseURL)
-	default:
-		Disable()
-	}
+	Disable()
 }

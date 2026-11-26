@@ -1,5 +1,5 @@
 {
-  "name": "photoprism",
+  "name": "myphotox",
   "private": true,
   "overrides": {
     "serialize-javascript": "^7.1.2"

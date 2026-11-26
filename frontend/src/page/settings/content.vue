@@ -27,61 +27,6 @@
         </v-card-actions>
       </v-card>
 
-      <v-card v-if="isSuperAdmin" flat tile class="mt-0 px-1 bg-background">
-        <v-card-title class="pb-0 text-subtitle-2">
-          {{ $gettext(`Stacks`) }}
-        </v-card-title>
-
-        <v-card-actions>
-          <v-row class="align-start" density="compact">
-            <v-col cols="12" sm="4">
-              <v-checkbox
-                v-model="settings.stack.meta"
-                class="ma-0 pa-0 input-stack-meta"
-                density="compact"
-                color="surface-variant"
-                :label="$gettext('Place & Time')"
-                :hint="$gettext('Stack pictures taken at the exact same time and location based on their metadata.')"
-                prepend-icon="mdi-clock-time-four-outline"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="4">
-              <v-checkbox
-                v-model="settings.stack.uuid"
-                class="ma-0 pa-0 input-stack-uuid"
-                density="compact"
-                color="surface-variant"
-                :label="$gettext('Unique ID')"
-                :hint="$gettext('Stack files sharing the same unique image or instance identifier.')"
-                prepend-icon="mdi-fingerprint"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="4">
-              <v-checkbox
-                v-model="settings.stack.name"
-                class="ma-0 pa-0 input-stack-name"
-                density="compact"
-                color="surface-variant"
-                :label="$gettext('Sequential Name')"
-                :hint="$gettext('Files with sequential names like \'IMG_1234 (2)\' and \'IMG_1234 (3)\' belong to the same picture.')"
-                prepend-icon="mdi-format-list-numbered-rtl"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-          </v-row>
-        </v-card-actions>
-      </v-card>
-
       <v-card flat tile class="mt-0 px-1 bg-background">
         <v-card-title class="pb-0 text-subtitle-2">
           {{ $gettext(`Search`) }}
@@ -146,7 +91,7 @@
 
         <v-card-actions>
           <v-row class="align-start" density="compact">
-            <v-col cols="12" :md="isSuperAdmin ? 4 : 6" class="px-2 pb-2 pt-2">
+            <v-col cols="12" :md="isSuperAdmin ? 6 : 12" class="px-2 pb-2 pt-2">
               <v-checkbox
                 v-model="settings.download.originals"
                 :disabled="busy"
@@ -161,22 +106,7 @@
               </v-checkbox>
             </v-col>
 
-            <v-col cols="12" :md="isSuperAdmin ? 4 : 6" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.download.mediaSidecar"
-                :disabled="busy"
-                class="ma-0 pa-0 input-download-sidecar"
-                density="compact"
-                :label="$gettext('Sidecar')"
-                :hint="$gettext('Include sidecar files when downloading stacks and archives.')"
-                prepend-icon="mdi-paperclip"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col v-if="isSuperAdmin" cols="12" md="4" class="px-2 pb-2 pt-2">
+            <v-col v-if="isSuperAdmin" cols="12" md="6" class="px-2 pb-2 pt-2">
               <v-select
                 v-model="settings.download.name"
                 :disabled="busy"

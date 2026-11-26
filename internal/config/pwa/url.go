@@ -108,6 +108,6 @@ func Shortcuts(scope string, frontendUri string) Urls {
 
 // PhotoPrism specifies the developer contact URL.
 var PhotoPrism = Url{
-	"PhotoPrism",
-	"https://www.photoprism.app/",
+	"MyPhotoX",
+	"",
 }

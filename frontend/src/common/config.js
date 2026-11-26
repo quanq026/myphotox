@@ -95,8 +95,8 @@ export default class Config {
         name: "Test",
       };
       this.page = {
-        title: "PhotoPrism",
-        caption: "AI-Powered Photos App",
+        title: "MyPhotoX",
+        caption: "Self-Hosted Photos App",
       };
       return;
     } else {
@@ -867,7 +867,7 @@ export default class Config {
     const s = this.get("name");
 
     if (!s) {
-      return "PhotoPrism";
+      return "MyPhotoX";
     }
 
     return s;
@@ -877,7 +877,7 @@ export default class Config {
     const s = this.get("about");
 
     if (!s) {
-      return "PhotoPrism®";
+      return "MyPhotoX";
     }
 
     return s;
@@ -887,7 +887,7 @@ export default class Config {
     const s = this.get("edition");
 
     if (!s) {
-      return "ce";
+      return "lite";
     }
 
     return s;

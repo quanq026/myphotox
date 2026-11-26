@@ -35,9 +35,6 @@
               ></v-text-field>
             </v-col>
             <v-col cols="12">
-              <v-text-field v-model="model.Location" hide-details :label="$gettext('Location')" :disabled="disabled" class="input-location"></v-text-field>
-            </v-col>
-            <v-col cols="12">
               <v-textarea
                 v-model="model.Description"
                 auto-grow
@@ -49,19 +46,7 @@
                 class="input-description"
               ></v-textarea>
             </v-col>
-            <v-col cols="12">
-              <v-combobox
-                v-model="category"
-                v-model:search="category"
-                class="input-category"
-                :items="categories"
-                :disabled="disabled"
-                :label="$gettext('Category')"
-                hide-details
-                @update:model-value="onChange"
-              ></v-combobox>
-            </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="8">
               <v-select
                 v-model="model.Order"
                 :label="$gettext('Sort Order')"
@@ -73,11 +58,8 @@
                 item-title="text"
               ></v-select>
             </v-col>
-            <v-col sm="3">
+            <v-col cols="12" sm="4">
               <v-checkbox v-model="model.Favorite" :disabled="disabled" :label="$gettext('Favorite')" density="comfortable" hide-details></v-checkbox>
-            </v-col>
-            <v-col v-if="experimental && featPrivate" sm="3">
-              <v-checkbox v-model="model.Private" :disabled="disabled" :label="$gettext('Private')" density="comfortable" hide-details></v-checkbox>
             </v-col>
           </v-row>
         </v-card-text>

@@ -881,7 +881,7 @@ func (m *Model) ClassifyModel() *classify.Model {
 			return nil
 		} else if err := model.Init(); err != nil {
 			m.classifyErr = err
-			log.Warnf("vision: %s (init %s model; fix or install it, then restart PhotoPrism)", err, clean.Log(m.Name))
+			log.Warnf("vision: %s (init %s model; fix or install it, then restart MyPhotoX)", err, clean.Log(m.Name))
 			return nil
 		} else {
 			m.classifyModel = model
@@ -940,7 +940,7 @@ func (m *Model) ClassifyModel() *classify.Model {
 			return nil
 		} else if err := model.Init(); err != nil {
 			m.classifyErr = err
-			log.Warnf("vision: %s (init %s; fix or install it, then restart PhotoPrism)", err, m.Path)
+			log.Warnf("vision: %s (init %s; fix or install it, then restart MyPhotoX)", err, m.Path)
 			return nil
 		} else {
 			m.classifyModel = model
@@ -1084,7 +1084,7 @@ func (m *Model) NsfwModel() *nsfw.Model {
 
 		if err := model.Init(); err != nil {
 			m.nsfwErr = err
-			warnModel("%s (init %s model; fix or install it, then restart PhotoPrism)", clean.Error(err), clean.Log(m.Name))
+			warnModel("%s (init %s model; fix or install it, then restart MyPhotoX)", clean.Error(err), clean.Log(m.Name))
 			return nil
 		}
 
@@ -1136,7 +1136,7 @@ func (m *Model) NsfwModel() *nsfw.Model {
 
 		if err := model.Init(); err != nil {
 			m.nsfwErr = err
-			warnModel("%s (init %s; fix or install it, then restart PhotoPrism)", clean.Error(err), clean.Log(m.Path))
+			warnModel("%s (init %s; fix or install it, then restart MyPhotoX)", clean.Error(err), clean.Log(m.Path))
 			return nil
 		}
 

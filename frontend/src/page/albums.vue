@@ -60,7 +60,7 @@
           <v-card v-show="expanded" flat color="secondary">
             <v-card-text class="dense">
               <v-row density="compact">
-                <v-col cols="12" sm="4" class="p-year-select">
+                <v-col cols="12" sm="6" class="p-year-select">
                   <v-select
                     :model-value="filter.year"
                     :label="$gettext('Year')"
@@ -81,27 +81,7 @@
                   >
                   </v-select>
                 </v-col>
-                <v-col cols="12" sm="4" class="p-category-select">
-                  <v-select
-                    :model-value="filter.category"
-                    :label="$gettext('Category')"
-                    :menu-props="{ maxHeight: 346 }"
-                    single-line
-                    hide-details
-                    variant="solo-filled"
-                    :density="density"
-                    :items="categories"
-                    item-title="text"
-                    item-value="value"
-                    @update:model-value="
-                      (v) => {
-                        updateQuery({ category: v });
-                      }
-                    "
-                  >
-                  </v-select>
-                </v-col>
-                <v-col cols="12" sm="4" class="p-sort-select">
+                <v-col cols="12" sm="6" class="p-sort-select">
                   <v-select
                     :model-value="filter.order"
                     :label="$gettext('Sort Order')"
@@ -153,9 +133,6 @@
             {{ $gettext(`Try again using other filters or keywords.`) }}
             <template v-if="staticFilter.type === 'album'">
               {{ $gettext(`After selecting pictures from search results, you can add them to an album using the context menu.`) }}
-            </template>
-            <template v-else>
-              {{ $gettext(`Your library is continuously analyzed to automatically create albums of special moments, trips, and places.`) }}
             </template>
           </div>
         </v-alert>
