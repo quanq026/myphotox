@@ -11,7 +11,6 @@ Copyright (c) 2018 - 2026 PhotoPrism UG. All rights reserved.
 import Photos from "page/photos.vue";
 import Albums from "page/albums.vue";
 import AlbumPhotos from "page/album/photos.vue";
-import Library from "page/library.vue";
 import Settings from "page/settings.vue";
 import Login from "page/auth/login.vue";
 import About from "page/about/about.vue";
@@ -107,7 +106,8 @@ export default [
     name: "browse",
     path: "/browse",
     component: Photos,
-    meta: { title: siteTitle, icon: true, requiresAuth: true },
+    meta: { title: $gettext("Pictures"), icon: true, requiresAuth: true },
+    props: { staticFilter: { photo: "true" } },
     beforeEnter: (to, from, next) => {
       if ($session.loginRequired()) {
         next({ name: loginRoute });
@@ -192,38 +192,6 @@ export default [
     },
   },
   {
-    name: "library_index",
-    path: "/index",
-    component: Library,
-    meta: { title: $gettext("Library"), requiresAuth: true, background: "background" },
-    props: { tab: "library_index" },
-    beforeEnter: (to, from, next) => {
-      if ($session.loginRequired()) {
-        next({ name: loginRoute });
-      } else if ($config.deny("files", "manage")) {
-        next({ name: $session.getDefaultRoute() });
-      } else {
-        next();
-      }
-    },
-  },
-  {
-    name: "library_import",
-    path: "/import",
-    component: Library,
-    meta: { title: $gettext("Library"), requiresAuth: true, background: "background" },
-    props: { tab: "library_import" },
-    beforeEnter: (to, from, next) => {
-      if ($session.loginRequired()) {
-        next({ name: loginRoute });
-      } else if ($config.deny("files", "manage")) {
-        next({ name: $session.getDefaultRoute() });
-      } else {
-        next();
-      }
-    },
-  },
-  {
     name: "settings",
     path: "/settings",
     component: Settings,
@@ -236,21 +204,12 @@ export default [
     props: { tab: "settings_general" },
   },
   {
-    name: "settings_content",
     path: "/settings/content",
-    component: Settings,
-    meta: {
-      title: $gettext("Settings"),
-      requiresAuth: true,
-      settings: true,
-      background: "background",
-    },
-    props: { tab: "settings_content" },
+    redirect: "/settings",
   },
   {
-    name: "settings_media",
     path: "/settings/media",
-    redirect: "/settings/content",
+    redirect: "/settings",
   },
   {
     name: "settings_account",

@@ -82,7 +82,7 @@
             </v-list-item>
 
             <v-list-item v-if="isMini && $config.feature('search')" to="/browse" variant="text" class="nav-browse" :ripple="false" @click.stop="">
-              <v-icon class="ma-auto">mdi-magnify</v-icon>
+              <v-icon class="ma-auto">mdi-image-multiple</v-icon>
             </v-list-item>
             <v-list-item
               v-else-if="!isMini && $config.feature('search')"
@@ -93,12 +93,12 @@
               @click.stop=""
             >
               <v-list-item-title class="nav-menu-item">
-                <v-icon>mdi-magnify</v-icon>
+                <v-icon>mdi-image-multiple</v-icon>
                 <p class="nav-item-title">
-                  {{ $gettext(`Search`) }}
+                  {{ $gettext(`Pictures`) }}
                 </p>
               </v-list-item-title>
-              <span v-if="config.count.all > 0" class="nav-count-item">{{ config.count.all }}</span>
+              <span v-if="config.count.photos > 0" class="nav-count-item">{{ config.count.photos }}</span>
             </v-list-item>
 
             <v-list-item v-if="isMini" v-show="$config.feature('albums')" to="/albums" variant="text" class="nav-albums" :ripple="false" @click.stop="">
@@ -228,32 +228,6 @@
                 </p>
               </v-list-item-title>
               <span v-show="config.count.archived > 0" class="nav-count-item">{{ config.count.archived }}</span>
-            </v-list-item>
-
-            <v-list-item
-              v-if="isMini && $config.feature('library')"
-              :to="{ name: 'library_index' }"
-              variant="text"
-              class="nav-library"
-              :ripple="false"
-              @click.stop=""
-            >
-              <v-icon class="ma-auto">mdi-film</v-icon>
-            </v-list-item>
-            <v-list-item
-              v-else-if="!isMini && $config.feature('library')"
-              :to="{ name: 'library_index' }"
-              variant="text"
-              class="nav-library"
-              :ripple="false"
-              @click.stop=""
-            >
-              <v-list-item-title class="nav-menu-item">
-                <v-icon>mdi-film</v-icon>
-                <p class="nav-item-title">
-                  {{ $gettext(`Library`) }}
-                </p>
-              </v-list-item-title>
             </v-list-item>
 
             <template v-if="!config.disable.settings">
@@ -399,8 +373,8 @@
         <div class="menu-actions">
           <div v-if="auth && !routeName('browse') && $config.feature('search')" class="menu-action nav-search">
             <router-link to="/browse">
-              <v-icon>mdi-magnify</v-icon>
-              {{ $gettext(`Search`) }}
+              <v-icon>mdi-image-multiple</v-icon>
+              {{ $gettext(`Pictures`) }}
             </router-link>
           </div>
           <div v-if="auth && !routeName('albums') && $config.feature('albums')" class="menu-action nav-albums">
@@ -425,12 +399,6 @@
             <router-link :to="{ name: 'folders' }">
               <v-icon>mdi-folder</v-icon>
               {{ $gettext(`Folders`) }}
-            </router-link>
-          </div>
-          <div v-if="auth && !routeName('library_index') && $config.feature('library')" class="menu-action nav-index">
-            <router-link :to="{ name: 'library_index' }">
-              <v-icon>mdi-film</v-icon>
-              {{ $gettext(`Library`) }}
             </router-link>
           </div>
           <div v-if="config.legalUrl" class="menu-action nav-legal">
@@ -614,7 +582,7 @@ export default {
       appStorage.setItem("navigation.mode", `${this.isMini}`);
     },
     showUsageInfo() {
-      this.$router.push({ name: "library_index" });
+      this.$router.push({ name: "settings" });
     },
     showServerConnectionHelp() {
       this.reloadApp();

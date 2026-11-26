@@ -20,7 +20,6 @@
 
 <script>
 import General from "page/settings/general.vue";
-import Content from "page/settings/content.vue";
 import Account from "page/settings/account.vue";
 import { $config } from "app/session";
 import { markRaw } from "vue";
@@ -58,25 +57,12 @@ export default {
         label: this.$gettext("General"),
         class: "",
         path: "/settings",
-        icon: "mdi-television",
+        icon: "mdi-tune",
         public: true,
         portal: true,
         admin: true,
         demo: true,
         show: $config.feature("settings"),
-      },
-      {
-        name: "settings_content",
-        component: markRaw(Content),
-        label: this.$gettext("Content"),
-        class: "",
-        path: "/settings/content",
-        icon: "mdi-camera-iris",
-        public: true,
-        portal: false,
-        admin: true,
-        demo: true,
-        show: $config.feature("settings") && !hasScope,
       },
       {
         name: "settings_account",

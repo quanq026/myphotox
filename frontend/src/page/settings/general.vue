@@ -8,7 +8,7 @@
 
         <v-card-actions>
           <v-row class="align-start" density="compact">
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="4">
               <v-select
                 v-model="settings.ui.theme"
                 :disabled="busy"
@@ -17,12 +17,13 @@
                 item-value="value"
                 :label="$gettext('Theme')"
                 :menu-props="{ maxHeight: 346 }"
+                hide-details
                 class="input-theme"
                 @update:model-value="onChangeTheme"
               ></v-select>
             </v-col>
 
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="4">
               <v-select
                 v-model="settings.ui.language"
                 :disabled="busy"
@@ -37,7 +38,7 @@
               ></v-select>
             </v-col>
 
-            <v-col cols="12" sm="6">
+            <v-col cols="12" sm="4">
               <v-select
                 v-model="settings.ui.timeZone"
                 :disabled="busy"
@@ -46,329 +47,98 @@
                 :items="options.TimeZones($gettext('Local'))"
                 :label="$gettext('Time Zone')"
                 :menu-props="{ maxHeight: 346 }"
+                hide-details
                 class="input-timezone"
                 @update:model-value="onChangeTheme"
-              ></v-select>
-            </v-col>
-
-            <v-col cols="12" sm="6">
-              <v-select
-                v-model="settings.ui.startPage"
-                :disabled="busy"
-                :items="options.StartPages(settings.features, isPortal)"
-                item-title="text"
-                item-value="value"
-                :label="$gettext('Start Page')"
-                :menu-props="{ maxHeight: 346 }"
-                hide-details
-                class="input-startpage"
-                @update:model-value="onChange"
               ></v-select>
             </v-col>
           </v-row>
         </v-card-actions>
       </v-card>
 
-      <v-card v-if="!isPortal && !hasScope && (isDemo || isSuperAdmin)" flat tile class="mt-0 px-1 bg-background">
+      <v-card flat tile class="mt-2 px-1 bg-background">
+        <v-card-title class="pb-2 text-subtitle-2">
+          {{ $gettext(`Display`) }}
+        </v-card-title>
+
         <v-card-actions>
           <v-row class="align-start" density="compact">
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
+            <v-col cols="12" sm="4" class="px-2 pb-2 pt-2">
               <v-checkbox
-                v-model="settings.features.albums"
+                v-model="settings.search.listView"
                 :disabled="busy"
-                class="ma-0 pa-0 input-albums"
+                class="ma-0 pa-0 input-search-listview"
                 density="compact"
-                :label="$gettext('Albums')"
-                :hint="$gettext('Show the Albums section to manually browse and organize pictures.')"
-                prepend-icon="mdi-bookmark"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.favorites"
-                :disabled="busy"
-                class="ma-0 pa-0 input-favorites"
-                density="compact"
-                :label="$gettext('Favorites')"
-                :hint="$gettext('Show the Favorites section to quickly access your starred pictures.')"
-                prepend-icon="mdi-star"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.folders"
-                :disabled="busy"
-                class="ma-0 pa-0 input-folders"
-                density="compact"
-                :label="$gettext('Folders')"
-                :hint="$gettext('Show the Folders section to browse pictures by directory structure.')"
-                prepend-icon="mdi-folder"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.videos"
-                :disabled="busy"
-                class="ma-0 pa-0 input-videos"
-                density="compact"
-                :label="$gettext('Videos')"
-                :hint="$gettext('Show the Videos section to browse videos.')"
-                prepend-icon="mdi-play-circle"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.upload"
-                :disabled="busy || config.readonly || isDemo"
-                class="ma-0 pa-0 input-upload"
-                density="compact"
-                :label="$gettext('Upload')"
-                :hint="$gettext('Allow users to upload new photos and videos through the web interface.')"
-                prepend-icon="mdi-cloud-upload"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.download"
-                :disabled="busy || isDemo"
-                class="ma-0 pa-0 input-download"
-                density="compact"
-                :label="$gettext('Download')"
-                :hint="$gettext('Enable downloading of media files from the web interface.')"
-                prepend-icon="mdi-download"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.export"
-                :disabled="busy || isDemo"
-                class="ma-0 pa-0 input-export"
-                density="compact"
-                :label="$gettext('Export')"
-                :hint="$gettext('Allow exporting pictures in different formats and sizes.')"
-                prepend-icon="mdi-file-export"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.import"
-                :disabled="busy || config.readonly || isDemo"
-                class="ma-0 pa-0 input-import"
-                density="compact"
-                :label="$gettext('Import')"
-                :hint="$gettext('Allow files to be copied or moved from the Import to the Originals folder.')"
-                prepend-icon="mdi-folder-plus"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.edit"
-                :disabled="busy || isDemo"
-                class="ma-0 pa-0 input-edit"
-                density="compact"
-                :label="$gettext('Edit')"
-                :hint="$gettext('Allow editing of metadata such as title, description, and date.')"
-                prepend-icon="mdi-pencil"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.batchEdit"
-                :disabled="busy || isDemo || !settings.features.edit"
-                class="ma-0 pa-0 input-batch-edit"
-                density="compact"
-                :label="$gettext('Batch Edit')"
-                :hint="$gettext('Allow editing the metadata and albums of multiple pictures at once.')"
-                prepend-icon="mdi-form-select"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.share"
-                :disabled="busy"
-                class="ma-0 pa-0 input-share"
-                density="compact"
-                :label="$gettext('Share')"
-                :hint="$gettext('Allow users to create and share links.')"
-                prepend-icon="mdi-share-variant"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.archive"
-                :disabled="busy || isDemo"
-                class="ma-0 pa-0 input-archive"
-                density="compact"
-                :label="$pgettext('Noun', 'Archive')"
-                :hint="$gettext('Allow users to archive photos and videos so they are hidden without being deleted.')"
-                prepend-icon="mdi-package-down"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.features.delete"
-                :disabled="busy"
-                class="ma-0 pa-0 input-delete"
-                density="compact"
-                :label="$gettext('Delete')"
-                :hint="$gettext('Allow files to be permanently deleted to free up storage space.')"
-                prepend-icon="mdi-delete"
+                :label="$gettext('List View')"
+                :hint="$gettext('View search results as a list.')"
+                prepend-icon="mdi-view-list"
                 persistent-hint
                 @update:model-value="onChange"
               ></v-checkbox>
             </v-col>
 
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
+            <v-col cols="12" sm="4" class="px-2 pb-2 pt-2">
               <v-checkbox
-                v-model="settings.features.library"
-                :disabled="busy || isDemo"
-                class="ma-0 pa-0 input-library"
+                v-model="settings.search.showTitles"
+                :disabled="busy"
+                class="ma-0 pa-0 input-search-titles"
                 density="compact"
-                :label="$gettext('Library')"
-                :hint="$gettext('Show the Library section to index, manage, and monitor the media library.')"
-                prepend-icon="mdi-film"
+                :label="$gettext('Show Titles')"
+                :hint="$gettext('Display picture titles in search results.')"
+                prepend-icon="mdi-format-text"
                 persistent-hint
                 @update:model-value="onChange"
-              >
-              </v-checkbox>
+              ></v-checkbox>
             </v-col>
 
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
+            <v-col cols="12" sm="4" class="px-2 pb-2 pt-2">
               <v-checkbox
-                v-model="settings.features.account"
-                :disabled="busy || isDemo"
-                class="ma-0 pa-0 input-account"
+                v-model="settings.search.showCaptions"
+                :disabled="busy"
+                class="ma-0 pa-0 input-search-captions"
                 density="compact"
-                :label="$gettext('Account')"
-                :hint="$gettext('Show the Account page so users can manage their profile and security settings.')"
-                prepend-icon="mdi-shield-account-variant"
+                :label="$gettext('Show Captions')"
+                :hint="$gettext('Display picture captions in search results.')"
+                prepend-icon="mdi-text"
                 persistent-hint
                 @update:model-value="onChange"
-              >
-              </v-checkbox>
+              ></v-checkbox>
             </v-col>
           </v-row>
         </v-card-actions>
       </v-card>
 
-      <v-card v-if="!isPortal && !hasScope && (isDemo || isSuperAdmin)" flat tile class="mt-0 px-1 bg-background">
+      <v-card v-if="canManageLibrary" flat tile class="mt-2 px-1 bg-background">
         <v-card-title class="pb-2 text-subtitle-2">
-          {{ $gettext(`Accessibility`) }}
+          {{ $gettext(`Library`) }}
         </v-card-title>
 
-        <v-card-actions>
-          <v-row class="align-start" density="compact">
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.ui.openOnHover"
-                :disabled="busy"
-                class="ma-0 pa-0 input-open-on-hover"
-                density="compact"
-                :label="$gettext('Open on Hover')"
-                :hint="$gettext('Open menus on hover instead of on click when using a desktop browser.')"
-                prepend-icon="mdi-cursor-default-click-outline"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.ui.reduceMotion"
-                :disabled="busy"
-                class="ma-0 pa-0 input-reduce-motion"
-                density="compact"
-                :label="$gettext('Reduce Motion')"
-                :hint="$gettext('Reduce interface animations and motion effects.')"
-                prepend-icon="mdi-motion-pause-outline"
-                persistent-hint
-                @update:model-value="onChange"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                :model-value="!settings.ui.scrollbar"
-                :disabled="busy"
-                class="ma-0 pa-0 input-hide-scrollbar"
-                density="compact"
-                :label="$gettext('Hide Scrollbar')"
-                :hint="$gettext('Hide the permanent scrollbar shown by some desktop browsers.')"
-                prepend-icon="mdi-arrow-up-down"
-                persistent-hint
-                @update:model-value="onChangeScrollbar"
-              >
-              </v-checkbox>
-            </v-col>
-
-            <v-col cols="12" sm="6" lg="3" class="px-2 pb-2 pt-2">
-              <v-checkbox
-                v-model="settings.ui.zoom"
-                :disabled="busy"
-                class="ma-0 pa-0 input-zoom"
-                density="compact"
-                :label="$gettext('Allow Page Zoom')"
-                :hint="$gettext('Allow zooming with pinch gestures on mobile devices.')"
-                prepend-icon="mdi-magnify-plus-outline"
-                persistent-hint
-                @update:model-value="onChangeZoom"
-              >
-              </v-checkbox>
-            </v-col>
-          </v-row>
+        <v-card-actions class="px-2 pb-3 pt-1">
+          <div class="d-flex flex-wrap align-center ga-3">
+            <v-btn
+              variant="flat"
+              color="highlight"
+              class="action-rescan"
+              :loading="indexing"
+              :disabled="indexing"
+              prepend-icon="mdi-refresh"
+              @click.stop="startRescan"
+            >
+              {{ $gettext(`Rescan Library`) }}
+            </v-btn>
+            <v-btn
+              v-if="indexing"
+              variant="flat"
+              color="button"
+              class="action-cancel-rescan"
+              @click.stop="cancelRescan"
+            >
+              {{ $gettext(`Cancel`) }}
+            </v-btn>
+            <span v-if="indexStatus" class="text-caption text-secondary-dark text-break">{{ indexStatus }}</span>
+          </div>
         </v-card-actions>
       </v-card>
-
     </v-form>
     <p-about-footer></p-about-footer>
   </div>
@@ -378,6 +148,7 @@
 import Settings from "model/settings";
 import * as options from "options/options";
 import * as themes from "options/themes";
+import $api from "common/api";
 import PAboutFooter from "component/about/footer.vue";
 
 export default {
@@ -387,30 +158,23 @@ export default {
   },
   data() {
     return {
-      isDemo: this.$config.isDemo(),
-      isAdmin: this.$session.isAdmin(),
-      hasScope: this.$session.hasScope(),
-      isSuperAdmin: this.$session.isSuperAdmin(),
       isPublic: this.$config.isPublic(),
-      isPortal: this.$config.isPortal(),
-      config: this.$config.values,
+      canManageLibrary: !this.$config.get("readonly") && !this.$config.isPublic() && this.$config.allow("files", "manage"),
       settings: new Settings(this.$config.getSettings()),
       options: options,
       busy: this.$config.loading(),
+      indexing: false,
+      indexStatus: "",
       subscriptions: [],
       themes: [],
       currentTheme: this.$config.themeName,
-      mapsStyle: options.MapsStyle(this.$config.get("experimental")),
-      currentMapsStyle: this.$config.getSettings().maps.style,
       languages: options.Languages(),
-      dialog: {
-        sponsor: false,
-      },
     };
   },
   created() {
     this.load();
     this.subscriptions.push(this.$event.subscribe("config.updated", (ev, data) => this.settings.setValues(data.config.settings)));
+    this.subscriptions.push(this.$event.subscribe("index", this.onIndexEvent));
   },
   beforeUnmount() {
     for (let i = 0; i < this.subscriptions.length; i++) {
@@ -419,96 +183,101 @@ export default {
   },
   methods: {
     load() {
-      this.$config.load().then(() => {
-        this.themes = themes.Translated();
-        this.mapsStyle = options.MapsStyle(this.$config.get("experimental"));
-        this.settings.setValues(this.$config.getSettings());
-        this.busy = false;
-      });
-    },
-    onChangeTheme(value) {
-      if (!value || !themes.Get(value, false)) {
-        return false;
-      }
+      this.busy = true;
+      this.$notify.blockUI("busy");
 
-      this.currentTheme = value;
-      this.onChange();
-    },
-    onChangeMapsStyle(value) {
-      if (!value) {
-        this.currentMapsStyle = value;
-        this.onChange();
-        return;
-      }
-
-      const style = this.mapsStyle.find((s) => s.value === value);
-
-      if (!style) {
-        return false;
-      }
-
-      this.$sponsorFeatures()
+      this.$config
+        .load()
         .then(() => {
-          this.currentMapsStyle = value;
-          this.onChange();
+          this.settings.setValues(this.$config.getSettings());
+          this.themes = themes.ThemeOptions(this.$gettext);
+          this.currentTheme = this.settings.ui.theme;
         })
-        .catch(() => {
-          if (style.sponsor) {
-            this.dialog.sponsor = true;
-            this.$nextTick(() => {
-              this.settings.maps.style = this.currentMapsStyle;
-            });
-          } else {
-            this.currentMapsStyle = value;
-            this.onChange();
-          }
+        .finally(() => {
+          this.busy = false;
+          this.$notify.unblockUI();
         });
     },
-    // onChange saves settings and refreshes the client config or UI language.
+    onChangeTheme() {
+      this.onChange().then(() => {
+        if (this.currentTheme !== this.settings.ui.theme || this.settings.changed("ui", "timeZone")) {
+          this.$notify.info(this.$gettext("Reloading…"));
+          this.$notify.blockUI();
+          setTimeout(() => window.location.reload(), 100);
+        }
+      });
+    },
     onChange() {
-      const locale = this.settings.changed("ui", "language");
-
-      if (locale) {
-        this.busy = true;
+      if (this.busy) {
+        return Promise.resolve();
       }
 
-      this.settings
+      const reload = this.settings.changed("ui", "language");
+
+      this.busy = true;
+      this.$notify.blockUI("busy");
+
+      return this.settings
         .save()
         .then(() => {
           this.$config.setSettings(this.settings);
-          if (locale) {
+
+          if (reload) {
             this.$notify.info(this.$gettext("Reloading…"));
-            this.$notify.blockUI();
             setTimeout(() => window.location.reload(), 100);
           } else {
             this.$notify.success(this.$gettext("Changes successfully saved"));
           }
         })
-        .finally(() => (this.busy = false));
+        .finally(() => {
+          this.busy = false;
+          this.$notify.unblockUI();
+        });
     },
-    // saveAndReload persists the settings and reloads the page so changes baked into the
-    // server-rendered HTML (viewport meta for zoom, hide-scrollbar body class) take effect.
-    saveAndReload() {
-      this.busy = true;
-      this.settings
-        .save()
+    startRescan() {
+      if (this.indexing || !this.canManageLibrary) {
+        return;
+      }
+      this.indexing = true;
+      this.indexStatus = this.$gettext("Indexing…");
+
+      $api
+        .post("index", { path: "", rescan: false, cleanup: true })
         .then(() => {
-          this.$config.setSettings(this.settings);
-          this.$notify.info(this.$gettext("Reloading…"));
-          this.$notify.blockUI();
-          setTimeout(() => window.location.reload(), 100);
+          this.indexing = false;
+          this.indexStatus = "";
+          this.$notify.success(this.$gettext("Done."));
         })
-        .finally(() => (this.busy = false));
+        .catch((e) => {
+          if (e?.response?.status !== 409) {
+            this.$notify.error(this.$gettext("Indexing failed"));
+          }
+          this.indexing = false;
+          this.indexStatus = "";
+        });
     },
-    // onChangeZoom saves the page-zoom setting and reloads to refresh the viewport meta tag.
-    onChangeZoom() {
-      this.saveAndReload();
+    cancelRescan() {
+      $api.delete("index");
     },
-    // onChangeScrollbar maps the inverted "Hide Scrollbar" checkbox to the stored ui.scrollbar
-    // flag and reloads so the server-rendered hide-scrollbar body class is refreshed.
-    onChangeScrollbar(hidden) {
-      this.settings.ui.scrollbar = !hidden;
-      this.saveAndReload();
+    onIndexEvent(ev, data) {
+      const type = ev ? ev.split(".")[1] : "";
+      switch (type) {
+        case "folder":
+        case "indexing":
+          this.indexing = true;
+          this.indexStatus = data?.fileName || data?.filePath || this.$gettext("Indexing…");
+          break;
+        case "converting":
+        case "thumbnails":
+        case "updating":
+          this.indexing = true;
+          this.indexStatus = data?.fileName || this.$gettext("Updating index");
+          break;
+        case "completed":
+          this.indexing = false;
+          this.indexStatus = "";
+          break;
+      }
     },
   },
 };

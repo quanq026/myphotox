@@ -1080,6 +1080,10 @@
     "{0} more": "{0} thêm",
     "{0} prepended action": "{0} hành động được thêm vào trước",
     "{0} selected": "{0} đã chọn",
-    "{0}-{1} of {2}": "{0}-{1} của {2}"
+    "{0}-{1} of {2}": "{0}-{1} của {2}",
+    "Pictures": "Ảnh",
+    "Rescan Library": "Quét lại thư viện",
+    "Display": "Hiển thị",
+    "Indexing…": "Đang quét…"
   }
 }

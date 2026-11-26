@@ -11,19 +11,14 @@ RUN npm --workspace=frontend run build && \
     node frontend/scripts/precompress.js
 
 ##################################################### STAGE 2: BACKEND #####################################################
-FROM ubuntu:noble AS go-build
+FROM golang:1.27-alpine AS go-build
 
-ENV DEBIAN_FRONTEND="noninteractive" \
-    PATH="/usr/local/go/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
-    CGO_ENABLED="1"
+ARG BUILD_VERSION=myphotox
+ENV CGO_ENABLED="1" \
+    CGO_CFLAGS="-D_LARGEFILE64_SOURCE"
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-      ca-certificates curl git gcc g++ pkg-config libvips-dev libheif-dev && \
-    rm -rf /var/lib/apt/lists/* && \
-    GO_VER=$(curl -fsSL "https://go.dev/VERSION?m=text" | head -n 1) && \
-    curl -fsSL "https://go.dev/dl/${GO_VER}.linux-amd64.tar.gz" | tar --no-same-owner -xz -C /usr/local && \
-    go version
+RUN apk add --no-cache \
+      gcc g++ musl-dev pkgconf vips-dev libheif-dev git
 
 WORKDIR /src
 COPY go.mod go.sum ./
@@ -32,36 +27,27 @@ RUN go mod download
 COPY . .
 COPY --from=frontend-build /src/assets/static /src/assets/static
 
-RUN sed -i 's/\r$//' scripts/build.sh scripts/dist/arch.sh && \
-    go mod tidy && \
-    mkdir -p /opt/myphotox/bin /opt/myphotox/lib /opt/myphotox/assets/models && \
-    ./scripts/build.sh prod /opt/myphotox/bin/myphotox
-
-RUN cp -a assets/templates assets/static /opt/myphotox/assets/ && \
-    mkdir -p /opt/myphotox/assets/locales && \
+RUN go mod tidy && \
+    mkdir -p /opt/myphotox/bin /opt/myphotox/assets/models /opt/myphotox/assets/locales && \
+    go build -trimpath -ldflags "-s -w -X main.version=${BUILD_VERSION}" -o /opt/myphotox/bin/myphotox cmd/photoprism/photoprism.go && \
+    cp -a assets/templates assets/static /opt/myphotox/assets/ && \
     cp -a assets/locales/en assets/locales/vi /opt/myphotox/assets/locales/ && \
-    if [ -f assets/locales/messages.pot ]; then cp -a assets/locales/messages.pot /opt/myphotox/assets/locales/; fi
-
-RUN LDD_OUT=$(ldd /opt/myphotox/bin/myphotox) && \
-    echo "$LDD_OUT" && \
-    if echo "$LDD_OUT" | grep -qi tensorflow; then echo "ERROR: libtensorflow must not be linked" && exit 1; fi && \
-    echo "$LDD_OUT" | awk '/=> \// {print $3}' | grep -E 'libvips|libheif|libde265|libx265|libaom|libjxl|libsharpyuv' | while read -r lib; do \
-      cp -Lv "$lib" /opt/myphotox/lib/ || true; \
-    done
+    if [ -f assets/locales/messages.pot ]; then cp -a assets/locales/messages.pot /opt/myphotox/assets/locales/; fi && \
+    ldd /opt/myphotox/bin/myphotox && \
+    ! ldd /opt/myphotox/bin/myphotox | grep -qi tensorflow
 
 ##################################################### STAGE 3: RUNTIME #####################################################
-FROM ubuntu:noble
+FROM alpine:3.23
 
 LABEL org.opencontainers.image.title="MyPhotoX"
-LABEL org.opencontainers.image.description="Lightweight SQLite single-container self-hosted photos app"
+LABEL org.opencontainers.image.description="Lightweight SQLite self-hosted photos app"
+LABEL org.opencontainers.image.source="https://github.com/quanq026/myphotox"
 
-ENV DEBIAN_FRONTEND="noninteractive" \
-    DO_NOT_TRACK=true \
+ENV DO_NOT_TRACK=true \
     ORT_DISABLE_TELEMETRY=1 \
     MALLOC_ARENA_MAX=2 \
     HOME="/myphotox" \
     PATH="/opt/myphotox/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
-    LD_LIBRARY_PATH="/opt/myphotox/lib:/usr/local/lib:/usr/lib" \
     PHOTOPRISM_ASSETS_PATH="/opt/myphotox/assets" \
     PHOTOPRISM_ORIGINALS_PATH="/myphotox/originals" \
     PHOTOPRISM_IMPORT_PATH="/myphotox/import" \
@@ -94,10 +80,8 @@ ENV DEBIAN_FRONTEND="noninteractive" \
     PHOTOPRISM_AUTO_INDEX="300" \
     PHOTOPRISM_AUTO_IMPORT="-1"
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-      ca-certificates tzdata bash curl sqlite3 ffmpeg exiftool libvips42t64 libheif1 && \
-    rm -rf /var/lib/apt/lists/* && \
+RUN apk add --no-cache \
+      ca-certificates tzdata bash curl sqlite ffmpeg exiftool vips vips-heif vips-jxl libheif && \
     mkdir -p /myphotox/originals /myphotox/import /myphotox/storage
 
 COPY --from=go-build /opt/myphotox /opt/myphotox

@@ -22,7 +22,6 @@ import IconPrism from "component/icon/prism.vue";
 
 // User account management.
 import PSettingsApps from "component/settings/apps.vue";
-import PSettingsPasscode from "component/settings/passcode.vue";
 import PSettingsPassword from "component/settings/password.vue";
 
 // Albums.
@@ -38,12 +37,8 @@ import PAuthFooter from "component/auth/footer.vue";
 // Sharing.
 import PShareDialog from "component/share/dialog.vue";
 
-// Settings.
-import PSettingsWebdav from "component/settings/webdav.vue";
-
 // Confirm.
 import PConfirmDialog from "component/confirm/dialog.vue";
-import PConfirmSponsor from "component/confirm/sponsor.vue";
 
 // Originals.
 import PFileClipboard from "component/file/clipboard.vue";
@@ -76,12 +71,6 @@ import PMetaFaceMarkers from "component/meta/face/markers.vue";
 // Upload.
 import PUploadDialog from "component/upload/dialog.vue";
 
-// Services.
-import PServiceAdd from "component/service/add.vue";
-import PServiceRemove from "component/service/remove.vue";
-import PServiceEdit from "component/service/edit.vue";
-import PServiceUpload from "component/service/upload.vue";
-
 // Installs the components imported above.
 export function install(app) {
   app.component("PNotify", PNotify);
@@ -104,9 +93,7 @@ export function install(app) {
   app.component("IconPrism", IconPrism);
 
   app.component("PSettingsApps", PSettingsApps);
-  app.component("PSettingsPasscode", PSettingsPasscode);
   app.component("PSettingsPassword", PSettingsPassword);
-  app.component("PSettingsWebdav", PSettingsWebdav);
 
   app.component("PAlbumClipboard", PAlbumClipboard);
   app.component("PAlbumToolbar", PAlbumToolbar);
@@ -119,7 +106,6 @@ export function install(app) {
   app.component("PShareDialog", PShareDialog);
 
   app.component("PConfirmDialog", PConfirmDialog);
-  app.component("PConfirmSponsor", PConfirmSponsor);
 
   app.component("PFileClipboard", PFileClipboard);
   app.component("PFileDeleteDialog", PFileDeleteDialog);
@@ -145,9 +131,4 @@ export function install(app) {
   app.component("PMetaFaceMarkers", PMetaFaceMarkers);
 
   app.component("PUploadDialog", PUploadDialog);
-
-  app.component("PServiceAdd", PServiceAdd);
-  app.component("PServiceRemove", PServiceRemove);
-  app.component("PServiceEdit", PServiceEdit);
-  app.component("PServiceUpload", PServiceUpload);
 }

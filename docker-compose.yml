@@ -1,10 +1,7 @@
 services:
   myphotox:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/quanq026/myphotox:latest
     container_name: myphotox
-    image: myphotox:latest
     restart: unless-stopped
     ports:
       - "${MYPHOTOX_PORT:-2342}:2342"
