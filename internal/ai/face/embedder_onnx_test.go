@@ -17,6 +17,7 @@ import (
 )
 
 var embeddingModelsPath, _ = filepath.Abs("../../../assets/models")
+var detectorModelPath = DefaultDetector().Path(embeddingModelsPath)
 
 // newTestONNXEmbedder returns an embedder for the named model, or skips the test
 // when its weights have not been installed.
